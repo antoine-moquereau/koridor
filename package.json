@@ -1,8 +1,14 @@
 {
   "name": "koridor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "author": "Antoine Moquereau",
+  "homepage": "https://github.com/antoine-moquereau/koridor#readme",
+  "bugs": "https://github.com/antoine-moquereau/koridor/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antoine-moquereau/koridor.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
