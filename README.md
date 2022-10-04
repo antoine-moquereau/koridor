@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="public/koridor.svg" width="160" alt="Koridor logo">
+  <a href="https://koridor.cc" target="_blank" rel="noopener noreferrer">
+    <img src="public/koridor.svg" width="160" alt="Koridor logo">
+  </a>
 </p>
 
 # Koridor
