@@ -7,12 +7,12 @@ function clickOutside(node) {
       node.dispatchEvent(new CustomEvent('outsideClick', node))
     }
   }
-	document.addEventListener('click', handleClick, true)
+  document.addEventListener('click', handleClick, true)
   return {
     destroy() {
       document.removeEventListener('click', handleClick, true)
     }
-	}
+  }
 }
 
 function crossfadeTransition() {

@@ -1,16 +1,18 @@
 <script>
+  import { fade } from 'svelte/transition'
+
   import { popup } from '../stores'
   import { clickOutside } from '../utilities'
 
   function handleOutsideClick() {
-    popup.set({ component: undefined })
+    popup.set({ component: undefined, props: undefined })
   }
 </script>
 
 {#if $popup.component}
-  <div class='PopOver'>
+  <div class='PopOver' transition:fade={{ duration: 200 }}>
     <div use:clickOutside on:outsideClick={handleOutsideClick}>
-      <svelte:component this={$popup.component} />
+      <svelte:component this={$popup.component} {...$popup.props} />
     </div>
   </div>
 {/if}
