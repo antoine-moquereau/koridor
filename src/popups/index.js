@@ -1,1 +1,1 @@
-export { default as Back } from './Back.svelte'
+export { default as ExitGameConfirmation } from './ExitGameConfirmation.svelte'
