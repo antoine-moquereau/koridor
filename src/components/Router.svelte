@@ -9,7 +9,6 @@
 
 <style>
   main {
-    background-color: var(--light-color);
     bottom: 0;
     display: flex;
     left: 0;
