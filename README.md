@@ -20,5 +20,5 @@ Feature todos:
 
 Tech todos:
 
-- [ ] Typescript migration
+- [ ] SvelteKit with JSDoc Typechecking migration
 - [ ] End-to-end tests
