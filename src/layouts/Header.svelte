@@ -1,28 +1,37 @@
 <script>
+  import { goto } from '$app/navigation'
+  import { page } from '$app/stores'
+
   import ColorModePicker from './ColorModePicker.svelte'
+  import ColorPicker from './ColorPicker.svelte'
   import { GitHub as GitHubIcon, Koridor as KoridorIcon } from '../icons'
   import { ExitGameConfirmation } from '../popups'
-  import { currentPage, game, page, popup } from '../stores'
+  import { popup, winner } from '../stores'
 
-  $: clickable = ['Congratulations', 'Game'].includes($currentPage)
-  $: handleHome = (event) => {
-    event.preventDefault()
-    if ($currentPage === 'Game') {
+  $: isInGame = $page.route.id === '/game/[[players]]' && !$winner
+
+  /**
+   * @param {Event} event
+   */
+  function handleHome(event) {
+    if (isInGame) {
+      event.preventDefault()
       popup.set({
         component: ExitGameConfirmation,
         props: {
           handleConfirm: () => {
-            page.set('Home')
+            goto('/')
           }
         }
       })
-    } else if ($currentPage === 'Congratulations') {
-      game.set($game.playerPositions.length)
-      page.set('Home')
     }
   }
-  $: handleGitHub = (event) => {
-    if ($currentPage === 'Game') {
+
+  /**
+   * @param {Event} event
+   */
+  function handleGitHub(event) {
+    if (isInGame) {
       event.preventDefault()
       popup.set({
         component: ExitGameConfirmation,
@@ -35,19 +44,30 @@
       })
     }
   }
+
+  $: clickable = $page.route.id !== '/'
 </script>
 
 <header>
   <div />
-  <h1 class:clickable on:click={handleHome}>
-    <span>
-      <KoridorIcon />
-    </span> 
-    Koridor
-  </h1>
+  <a class="Koridor" class:clickable href="/" on:click={handleHome}>
+    <h1>
+      <span>
+        <KoridorIcon />
+      </span>
+      Koridor
+    </h1>
+  </a>
   <div>
+    <ColorPicker />
     <ColorModePicker />
-    <a href="https://github.com/antoine-moquereau/koridor" on:click={handleGitHub} rel="external" title="GitHub Repo">
+    <a
+      class="GitHub"
+      href="https://github.com/antoine-moquereau/koridor"
+      on:click={handleGitHub}
+      rel="external"
+      title="GitHub Repo"
+    >
       <GitHubIcon />
     </a>
   </div>
@@ -56,7 +76,6 @@
 <style>
   header {
     align-items: center;
-    color: var(--font-color);
     display: flex;
     height: 6vh;
     justify-content: space-between;
@@ -68,7 +87,18 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
-    width: 10vh;
+    width: 13vh;
+  }
+  .Koridor {
+    color: var(--font-color);
+    cursor: default;
+    transition: color 0.3s;
+  }
+  .clickable {
+    cursor: pointer;
+  }
+  a:hover {
+    text-decoration: none;
   }
   h1 {
     align-items: center;
@@ -77,9 +107,6 @@
     font-weight: 900;
     line-height: 3.3vh;
     margin: 0;
-  }
-  .clickable {
-    cursor: pointer;
   }
   span {
     height: 6vh;
@@ -91,18 +118,20 @@
     backface-visibility: hidden;
     height: 100%;
     scale: 1 1 1;
-    transition: .7s;
+    transition: 0.7s;
     width: auto;
   }
   .clickable:hover span :global(svg) {
     scale: -1 1 1;
   }
-  a :global(svg) {
+  .GitHub :global(svg) {
+    display: flex;
     fill: var(--font-color);
     height: 3.3vh;
+    transition: fill 0.3s;
     width: 3.3vh;
   }
-  a:hover :global(svg) {
+  .GitHub:hover :global(svg) {
     fill: var(--transparent99-font-color);
   }
 </style>

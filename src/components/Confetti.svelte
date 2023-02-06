@@ -3,7 +3,8 @@
   import { onMount } from 'svelte'
 
   let characters = ['🥳', '🎉', '✨']
-  let confetti = new Array(100).fill()
+  let confetti = new Array(100)
+    .fill(undefined)
     .map((_, i) => {
       return {
         character: characters[i % characters.length],
@@ -15,6 +16,9 @@
     .sort((a, b) => a.r - b.r)
 
   onMount(() => {
+    /**
+     * @type {number}
+     */
     let frame
     function loop() {
       frame = requestAnimationFrame(loop)

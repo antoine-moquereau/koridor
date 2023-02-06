@@ -1,22 +1,24 @@
-<script context='module'>
+<script context="module">
   import { crossfadeTransition } from './../../../utilities'
 
   const [sendPawn, receivePawn] = crossfadeTransition()
 </script>
 
 <script>
+  /**
+   * @type {number | undefined}
+   */
   let key = undefined
   export { key as player }
 </script>
 
-<div
-  class={`Pawn${key}`}
-  in:receivePawn|local={{key}}
-  out:sendPawn|local={{key}}
-/>
+<div class={`Pawn${key}`} in:receivePawn|local={{ key }} out:sendPawn|local={{ key }} />
 
 <style>
-  .Pawn1, .Pawn2, .Pawn3, .Pawn4 {
+  .Pawn1,
+  .Pawn2,
+  .Pawn3,
+  .Pawn4 {
     border-radius: 50%;
     height: 58%;
     position: absolute;

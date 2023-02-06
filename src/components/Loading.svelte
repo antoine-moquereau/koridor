@@ -1,17 +1,34 @@
-<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+<div class="lds-ellipsis">
+  <div />
+  <div />
+  <div />
+  <div />
+</div>
 
 <style>
   @keyframes lds-ellipsis1 {
-    0% { transform: scale(0); }
-    100% { transform: scale(1); }
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
   @keyframes lds-ellipsis3 {
-    0%   { transform: scale(1); }
-    100% { transform: scale(0); }
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
   }
   @keyframes lds-ellipsis2 {
-    0%   { transform: translate(0, 0); }
-    100% { transform: translate(24px, 0); }
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
   }
 
   .lds-ellipsis {

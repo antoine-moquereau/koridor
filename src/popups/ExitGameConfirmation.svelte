@@ -2,6 +2,9 @@
   import { Button, Loading } from '../components'
   import { popup } from '../stores'
 
+  /**
+   * @type {Function | undefined}
+   */
   let confirm = undefined
   export { confirm as handleConfirm }
   export let navigation = false
@@ -9,14 +12,12 @@
   let loading = false
 
   function handleCancel() {
-    popup.set({ component: undefined, props: undefined })
+    popup.set({})
   }
   function handleConfirm() {
-    if (navigation)
-      loading = true
-    else
-      popup.set({ component: undefined, props: undefined })
-    confirm()
+    if (navigation) loading = true
+    else popup.set({})
+    if (confirm) confirm()
   }
 </script>
 
@@ -24,10 +25,10 @@
   <section>
     <p>Are you sure you want to quit the game ?</p>
     <nav>
-      <Button class='Button' on:click={handleCancel}>
-        No<span>, <br />I wanna finnish the party</span>
+      <Button class="Button" on:click={handleCancel}>
+        No<span>, <br />I continue the game</span>
       </Button>
-      <Button class='Button' on:click={handleConfirm}>
+      <Button class="Button" on:click={handleConfirm}>
         Yes<span>, <br />I capitulate</span>
       </Button>
     </nav>
@@ -37,7 +38,8 @@
 {/if}
 
 <style>
-  section, nav {
+  section,
+  nav {
     align-items: center;
     display: flex;
     margin: auto;
@@ -57,7 +59,6 @@
   nav :global(.Button) {
     margin: 2vh;
   }
-
   @media (max-aspect-ratio: 3/4) {
     nav :global(.Button) {
       margin: 3vw;

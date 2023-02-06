@@ -5,12 +5,12 @@
   import { clickOutside } from '../utilities'
 
   function handleOutsideClick() {
-    popup.set({ component: undefined, props: undefined })
+    popup.set({})
   }
 </script>
 
 {#if $popup.component}
-  <div class='PopOver' transition:fade={{ duration: 200 }}>
+  <div class="PopOver" transition:fade={{ duration: 200 }}>
     <div use:clickOutside on:outsideClick={handleOutsideClick}>
       <svelte:component this={$popup.component} {...$popup.props} />
     </div>
@@ -19,7 +19,7 @@
 
 <style>
   .PopOver {
-    background-color: var(--transparent-light-color);
+    background-color: var(--transparent33-font-color);
     bottom: 0;
     display: flex;
     left: 0;

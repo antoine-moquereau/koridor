@@ -9,38 +9,58 @@
 
   const [sendFence, receiveFence] = crossfadeTransition()
 
-  let fenceHover = {}
+  /**
+   * @typedef {'horizontal' | 'vertical'} Orientation
+   */
 
+  /**
+   * @type {{ orientation: Orientation | undefined; position: number | undefined; }}
+   */
+  export let fenceHover = { orientation: undefined, position: undefined }
+
+  /**
+   * @param {Orientation} orientation
+   * @returns {(position: number) => void}
+   */
   function handleFenceHover(orientation) {
-    return (position) => {
+    return position => {
       fenceHover = { orientation, position }
     }
   }
   function handleFenceLeave() {
-    fenceHover = {}
+    fenceHover = { orientation: undefined, position: undefined }
   }
+
+  /**
+   * @type {((position: number) => { index: number; marked: boolean; player: number; shortestPath: string; })}
+   */
+  let error
 
   $: fourPlayers = $game.playerPositions.length === 4
   $: error = position => {
     const blockedPaths = fenceHover.orientation
-      ? $activePlayerPointOfView.error[fenceHover.orientation].filter(el => el.position === fenceHover.position)
+      ? $activePlayerPointOfView.error[fenceHover.orientation].filter(
+          el => el.position === fenceHover.position
+        )
       : []
     const forbiddenFence = blockedPaths.length > 0 && blockedPaths[0]
     if (forbiddenFence) {
       const { path, player, shortestPath: sP } = forbiddenFence
       const marked = !path.includes(position)
-      const i = sP.indexOf(position)
+      let index = sP.indexOf(position)
       let shortestPath = ''
-      if (i !== -1) {
-        if (i === sP.length - 1) shortestPath = '×'
-        else if (sP[i] === sP[i + 1] - 1) shortestPath = marked ? '⇢' : '→'
-        else if (sP[i] === sP[i + 1] + 1) shortestPath = marked ? '⇠' : '←'
-        else if (sP[i] === sP[i + 1] + SIZE) shortestPath = marked ? '⇡' : '↑'
-        else if (sP[i] === sP[i + 1] - SIZE) shortestPath = marked ? '⇣' : '↓'
+      if (index !== -1) {
+        if (index === sP.length - 1) shortestPath = '×'
+        else if (sP[index] === sP[index + 1] - 1) shortestPath = marked ? '⇢' : '→'
+        else if (sP[index] === sP[index + 1] + 1) shortestPath = marked ? '⇠' : '←'
+        else if (sP[index] === sP[index + 1] + SIZE) shortestPath = marked ? '⇡' : '↑'
+        else if (sP[index] === sP[index + 1] - SIZE) shortestPath = marked ? '⇣' : '↓'
+      } else {
+        index = 0
       }
-      return { marked, player, shortestPath }
+      return { index, marked, player, shortestPath }
     }
-    return { marked: false, player: -1, shortestPath: '' }
+    return { index: 0, marked: false, player: -1, shortestPath: '' }
   }
 </script>
 
@@ -55,20 +75,22 @@
     {/if}
 
     <Fences {...{ player: 0, sendFence }} />
-    
+
     {#if fourPlayers}
       <Fences {...{ player: 1, sendFence }} />
     {/if}
 
-    <div class='Spaces'>
-      {#each (new Array(SIZE*SIZE)).fill(false) as _, position}
-        <Space {...{
-          position,
-          error: error(position),
-          receiveFence,
-          handleFenceHover,
-          handleFenceLeave
-        }} />
+    <div class="Spaces">
+      {#each new Array(SIZE * SIZE).fill(false) as _, position}
+        <Space
+          {...{
+            position,
+            error: error(position),
+            receiveFence,
+            handleFenceHover,
+            handleFenceLeave
+          }}
+        />
       {/each}
     </div>
 
@@ -79,7 +101,7 @@
 <style>
   .Board {
     align-items: center;
-    background: var(--normal-color);
+    background-color: var(--normal-color);
     border-radius: 2%;
     box-shadow: 0 0 2px var(--transparent99-font-color);
     display: flex;
@@ -90,6 +112,7 @@
     padding: 0.4vh 0;
     position: fixed;
     top: 0;
+    transition: background-color 0.4s, box-shadow 0.5s;
     width: 66vh;
   }
   .Board.fourPlayers {
@@ -107,7 +130,7 @@
     flex-wrap: wrap;
     height: 66%;
     justify-content: center;
-    transition: .4s;
+    transition: 0.4s;
     width: 82%;
   }
   .Board.fourPlayers .Spaces {
@@ -118,14 +141,22 @@
     border-top-color: rgb(190, 160, 40, 18%);
     width: 66%;
   }
-  .Board.player1 .Spaces { border-bottom-color: rgb(40, 40, 190, 67%); }
-  .Board.player2 .Spaces { border-top-color: rgb(190, 40, 40, 67%); }
+  .Board.player1 .Spaces {
+    border-bottom-color: rgb(40, 40, 190, 67%);
+  }
+  .Board.player2 .Spaces {
+    border-top-color: rgb(190, 40, 40, 67%);
+  }
   .Board.fourPlayers.player2 .Spaces {
     border-left-color: rgb(190, 40, 40, 67%);
     border-top-color: rgb(190, 160, 40, 18%);
   }
-  .Board.player3 .Spaces { border-top-color: rgb(190, 160, 40, 67%); }
-  .Board.player4 .Spaces { border-right-color: rgb(40, 160, 40, 67%); }
+  .Board.player3 .Spaces {
+    border-top-color: rgb(190, 160, 40, 67%);
+  }
+  .Board.player4 .Spaces {
+    border-right-color: rgb(40, 160, 40, 67%);
+  }
 
   @media (max-aspect-ratio: 3/4) {
     .Board {

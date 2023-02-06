@@ -2,7 +2,16 @@
   import { FENCES } from './../../constants'
   import { game } from '../../stores'
 
+  /**
+   * @type {number}
+   */
   export let player
+  /**
+   * @type {(
+      node: Element,
+      params: import('svelte/transition').CrossfadeParams & { key: any; }
+    ) => () => import('svelte/transition').TransitionConfig}
+   */
   export let sendFence
 
   $: players = $game.playerPositions.length
@@ -11,11 +20,11 @@
   const left = player === 3
 </script>
 
-<div class='Fences' class:fourPlayers class:right class:left>
-  {#each (new Array(FENCES / players)).fill(false) as _, i (i)}
-    <div class='Fence-wrapper'>
+<div class="Fences" class:fourPlayers class:right class:left>
+  {#each new Array(FENCES / players).fill(false) as _, i (i)}
+    <div class="Fence-wrapper">
       {#if $game.fences.available[player] > i}
-        <div class='Fence' out:sendFence={{key: (player * 10) + i}} />
+        <div class="Fence" out:sendFence={{ key: player * 10 + i }} />
       {/if}
     </div>
   {/each}

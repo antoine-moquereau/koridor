@@ -1,19 +1,32 @@
+/**
+ * @param {number[][]} graph
+ * @param {number} startPosition
+ */
 function breadthFirstSearch(graph, startPosition) {
+  /**
+   * @type {number[]}
+   */
   const path = []
   const explored = [startPosition]
-  path.push(startPosition)
-  while (path.length !== 0) {
-    const v = path.shift()
+  /**
+   * @type {number | undefined}
+   */
+  let v = startPosition
+  while (v !== undefined) {
     graph[v].forEach(w => {
       if (!explored.includes(w)) {
         explored.push(w)
         path.push(w)
       }
     })
+    v = path.shift()
   }
   return explored
 }
 
+/**
+ * @param {number} size
+ */
 function createGraph(size) {
   return Array.from({ length: size * size }, (_, i) => {
     const edges = []
@@ -25,10 +38,24 @@ function createGraph(size) {
   })
 }
 
+/**
+ * @param {number[][]} graph
+ * @param {number[]} playerPositions
+ * @param {number} activePlayer
+ */
 function getActivePlayerPointOfViewGraph(graph, playerPositions, activePlayer) {
   const opponents = playerPositions
     .filter((_, i) => i !== activePlayer)
-    .map(position => ({ position, newEdges: [] }))
+    .map(position => ({
+      position,
+      /**
+       * @type {number[]}
+       */
+      newEdges: []
+    }))
+  /**
+   * @type {number[]}
+   */
   const opponentsPositionsEdges = []
   opponents
     .map(el => el.position)
@@ -51,30 +78,21 @@ function getActivePlayerPointOfViewGraph(graph, playerPositions, activePlayer) {
           }
           return [
             ...opponentsEdges,
-            ...(
-              graph[playerPosition].includes(newPosition) &&
-              !playerPositions
-                .filter((_, i) => i !== activePlayer)
-                .includes(newPosition)
-                  ? [newPosition]
-                  : graph[playerPosition].filter(
-                    e =>
-                      e !== position &&
-                      e !== newPosition &&
-                      !playerPositions
-                        .filter((_, i) => i !== activePlayer)
-                        .includes(e)
-                  )
-            ),
+            ...(graph[playerPosition].includes(newPosition) &&
+            !playerPositions.filter((_, i) => i !== activePlayer).includes(newPosition)
+              ? [newPosition]
+              : graph[playerPosition].filter(
+                  e =>
+                    e !== position &&
+                    e !== newPosition &&
+                    !playerPositions.filter((_, i) => i !== activePlayer).includes(e)
+                ))
           ]
         },
         [
           ...graph[position].filter(
-            el =>
-              !playerPositions
-                .filter((_, i) => i !== activePlayer)
-                .includes(el)
-          ),
+            el => !playerPositions.filter((_, i) => i !== activePlayer).includes(el)
+          )
         ]
       )
     opponents.push({ position, newEdges })
@@ -87,6 +105,10 @@ function getActivePlayerPointOfViewGraph(graph, playerPositions, activePlayer) {
   })
 }
 
+/**
+ * @param {number[][]} graph
+ * @param {number} position
+ */
 function placeHorizontalFence(graph, position) {
   const size = Math.sqrt(graph.length)
   return graph.map((el, i) => {
@@ -98,6 +120,10 @@ function placeHorizontalFence(graph, position) {
   })
 }
 
+/**
+ * @param {number[][]} graph
+ * @param {number} position
+ */
 function placeVerticalFence(graph, position) {
   const size = Math.sqrt(graph.length)
   return graph.map((el, i) => {
@@ -109,24 +135,39 @@ function placeVerticalFence(graph, position) {
   })
 }
 
+/**
+ * @param {number[][]} graph
+ * @param {number} startPosition
+ * @param {number[]} endPositions
+ */
 function shortestPath(graph, startPosition, endPositions) {
   let stop = false
+  /**
+   * @type {{ key: number; from: number; }[]}
+   */
   const keyFrom = []
+  /**
+   * @type {number[]}
+   */
   const path = []
   const explored = [startPosition]
-  path.push(startPosition)
-  while (path.length !== 0 && !stop) {
-    const v = path.shift()
-    graph[v].forEach(w => {
+  /**
+   * @type {number | undefined}
+   */
+  let v = startPosition
+  while (v !== undefined && !stop) {
+    const from = v
+    graph[from].forEach(w => {
       if (!explored.includes(w) && !stop) {
         explored.push(w)
         path.push(w)
-        keyFrom.push({ key: w, from: v })
-        if(endPositions.includes(w)) {
+        keyFrom.push({ key: w, from })
+        if (endPositions.includes(w)) {
           stop = true
         }
       }
     })
+    v = path.shift()
   }
   const shortestPath = []
   let from = explored[explored.length - 1]
@@ -137,4 +178,11 @@ function shortestPath(graph, startPosition, endPositions) {
   return shortestPath.reverse()
 }
 
-export { breadthFirstSearch, createGraph, getActivePlayerPointOfViewGraph, placeHorizontalFence, placeVerticalFence, shortestPath }
+export {
+  breadthFirstSearch,
+  createGraph,
+  getActivePlayerPointOfViewGraph,
+  placeHorizontalFence,
+  placeVerticalFence,
+  shortestPath
+}

@@ -1,6 +1,12 @@
 import { writable } from 'svelte/store'
 
-export const popup = writable({
-  component: undefined,
-  props: undefined,
-})
+/**
+ * @typedef {Object} Popup
+ * @property {typeof import('svelte').SvelteComponent=} component
+ * @property {Object=} props
+ */
+
+/**
+ * @type {import('svelte/store').Writable<Popup>}
+ */
+export const popup = writable({})

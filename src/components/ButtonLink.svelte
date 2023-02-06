@@ -4,14 +4,18 @@
    */
   let className = undefined
   export { className as class }
+  /**
+   * @type {string}
+   */
+  export let href
 </script>
 
-<button class={className} type="button" on:click>
+<a class={className} {href}>
   <slot />
-</button>
+</a>
 
 <style>
-  button {
+  a {
     background: var(--normal-color);
     border: 2px solid var(--transparentcc-font-color);
     border-radius: 1vh;
@@ -24,11 +28,12 @@
     transition: 0.2s ease-in-out;
     width: 22vh;
   }
-  button:hover {
+  a:hover {
     background: var(--dark-color);
     border: 2px solid var(--font-color);
     box-shadow: 0 0 1vh var(--transparent99-font-color);
     font-weight: 600;
+    text-decoration: none;
     transform: scale(1.12);
   }
 </style>

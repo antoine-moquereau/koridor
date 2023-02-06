@@ -1,16 +1,22 @@
 import { quintOut } from 'svelte/easing'
 import { crossfade } from 'svelte/transition'
 
+/**
+ * @param {HTMLElement} node
+ */
 function clickOutside(node) {
+  /**
+   * @param {MouseEvent} event
+   */
   const handleClick = event => {
-    if (!node.contains(event.target)) {
-      node.dispatchEvent(new CustomEvent('outsideClick', node))
+    if (event.target instanceof HTMLElement && !node.contains(event.target)) {
+      node.dispatchEvent(new Event('outsideClick'))
     }
   }
-  document.addEventListener('click', handleClick, true)
+  document?.addEventListener('click', handleClick, true)
   return {
     destroy() {
-      document.removeEventListener('click', handleClick, true)
+      document?.removeEventListener('click', handleClick, true)
     }
   }
 }

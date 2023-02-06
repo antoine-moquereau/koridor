@@ -1,5 +1,5 @@
 <div>
-  <slot></slot>
+  <slot />
 </div>
 
 <style>
@@ -7,6 +7,7 @@
     background-color: var(--light-color);
     height: 100vh;
     overflow: hidden;
+    transition: background-color 0.7s;
     width: 100%;
   }
 </style>
