@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^1.0.0",
+    "@sveltejs/adapter-static": "^1.0.6",
     "@sveltejs/kit": "^1.0.0",
     "colord": "^2.9.3",
     "prettier": "^2.8.0",
