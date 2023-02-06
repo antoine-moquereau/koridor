@@ -1,38 +1,24 @@
-# create-svelte
+<p align="center">
+  <a href="https://koridor.cc" target="_blank" rel="noopener noreferrer">
+    <img src="static/koridor.svg" width="128" alt="Koridor logo">
+  </a>
+</p>
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+# Koridor
 
-## Creating a project
+A [Svelte](https://svelte.dev) implementation of my favorite board game.
 
-If you're seeing this, you've probably already done this step. Congrats!
+This is a development version. v1.0.0 should contain many more features.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+Feature todos:
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+- [x] Desktop core
+- [ ] Mobile support using drag and drop actions
+- [ ] History of moves played and possibility of going back
+- [ ] Online with chat
+- [ ] Versus Bots
 
-## Developing
+Tech todos:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- [x] SvelteKit with JSDoc Typechecking migration
+- [ ] End-to-end tests
