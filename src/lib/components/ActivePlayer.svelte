@@ -1,7 +1,7 @@
 <script>
   import { fly } from 'svelte/transition'
 
-  import { game } from '../stores'
+  import { game } from '$lib/stores'
 
   $: player = $game.activePlayer + 1
 </script>

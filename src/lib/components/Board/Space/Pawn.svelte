@@ -1,5 +1,5 @@
 <script context="module">
-  import { crossfadeTransition } from './../../../utilities'
+  import { crossfadeTransition } from '$lib/utilities'
 
   const [sendPawn, receivePawn] = crossfadeTransition()
 </script>

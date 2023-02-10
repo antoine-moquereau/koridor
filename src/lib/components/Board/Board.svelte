@@ -1,11 +1,11 @@
 <script>
   import { scale } from 'svelte/transition'
 
-  import { SIZE } from './../../constants'
+  import { SIZE } from '$lib/constants'
   import Fences from './Fences.svelte'
   import Space from './Space'
-  import { activePlayerPointOfView, game } from '../../stores'
-  import { crossfadeTransition } from './../../utilities'
+  import { activePlayerPointOfView, game } from '$lib/stores'
+  import { crossfadeTransition } from '$lib/utilities'
 
   const [sendFence, receiveFence] = crossfadeTransition()
 

@@ -1,6 +1,6 @@
 import { derived, writable } from 'svelte/store'
 
-import { FENCES, SIZE } from '../../constants'
+import { FENCES, SIZE } from '$lib/constants'
 import {
   breadthFirstSearch,
   createGraph,

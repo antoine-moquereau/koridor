@@ -1,6 +1,7 @@
 <script>
   import { browser } from '$app/environment'
-  import { color } from '../../stores'
+
+  import { color } from '$lib/stores'
   import Wrapper from './Wrapper.svelte'
 </script>
 

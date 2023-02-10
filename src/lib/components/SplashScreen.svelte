@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import { draw, scale } from 'svelte/transition'
 
-  import { Koridor as KoridorIcon } from '../icons'
+  import { Koridor as KoridorIcon } from '$lib/icons'
 
   let visible = false
   onMount(async () => {

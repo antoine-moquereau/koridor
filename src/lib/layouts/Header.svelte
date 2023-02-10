@@ -4,9 +4,9 @@
 
   import ColorModePicker from './ColorModePicker.svelte'
   import ColorPicker from './ColorPicker.svelte'
-  import { GitHub as GitHubIcon, Koridor as KoridorIcon } from '../icons'
-  import { ExitGameConfirmation } from '../popups'
-  import { popup, winner } from '../stores'
+  import { GitHub as GitHubIcon, Koridor as KoridorIcon } from '$lib/icons'
+  import { ExitGameConfirmation } from '$lib/popups'
+  import { popup, winner } from '$lib/stores'
 
   $: isInGame = $page.route.id === '/game/[[players]]' && !$winner
 

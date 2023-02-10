@@ -1,6 +1,6 @@
 <script>
-  import { FENCES } from './../../constants'
-  import { game } from '../../stores'
+  import { FENCES } from '$lib/constants'
+  import { game } from '$lib/stores'
 
   /**
    * @type {number}

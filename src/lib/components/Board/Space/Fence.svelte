@@ -1,12 +1,12 @@
 <script>
-  import { game } from '../../../stores'
+  import { game } from '$lib/stores'
 
   /**
    * @type {number[]}
    */
   export let boardFences
   /**
-   * @type {import('../../../stores/game/game.js').Error[]}
+   * @type {import('$lib/stores/game/game.js').Error[]}
    */
   export let error
   /**

@@ -4,8 +4,8 @@
   import { onMount } from 'svelte'
   import { fade, scale, fly } from 'svelte/transition'
 
-  import { Board, Button, Confetti } from '../../components'
-  import { game, winner } from '../../stores'
+  import { Board, Button, Confetti } from '$lib/components'
+  import { game, winner } from '$lib/stores'
 
   /**
    * @typedef {'horizontal' | 'vertical'} Orientation
@@ -273,5 +273,26 @@
     right: 0;
     top: 0;
     z-index: 99;
+  }
+
+  @media (max-aspect-ratio: 1/1) {
+    .RulesWrapper {
+      flex-direction: column;
+    }
+    .RulesWrapper :global(.Board) {
+      height: 41vh;
+      margin: 14vh auto auto;
+      position: relative;
+      width: 33vh;
+    }
+    .RulesWrapper .Rules {
+      margin: auto;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    li {
+      font-size: 1rem;
+    }
   }
 </style>

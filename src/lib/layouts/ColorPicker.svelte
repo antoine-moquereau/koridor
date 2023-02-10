@@ -1,7 +1,7 @@
 <script>
-  import { Palette as PaletteIcon } from '../icons'
-  import { Colors } from '../popups'
-  import { popup } from '../stores'
+  import { Palette as PaletteIcon } from '$lib/icons'
+  import { Colors } from '$lib/popups'
+  import { popup } from '$lib/stores'
 
   function handleColors() {
     popup.set({

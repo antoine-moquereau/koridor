@@ -3,7 +3,7 @@
 
   if (browser) import('vanilla-colorful')
 
-  import { color as colorStore } from '../stores'
+  import { color as colorStore } from '$lib/stores'
 
   let color = $colorStore.light
 
@@ -98,5 +98,18 @@
   }
   button:hover {
     box-shadow: 0 0 1.4vh var(--color);
+  }
+
+  @media (max-aspect-ratio: 1/1) {
+    section {
+      left: 2vh;
+      right: 2vh;
+    }
+    .triangle {
+      right: 9vh;
+    }
+    .Picker {
+      width: 100%;
+    }
   }
 </style>

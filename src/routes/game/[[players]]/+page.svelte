@@ -1,8 +1,8 @@
 <script>
   import { fade, scale } from 'svelte/transition'
 
-  import { ActivePlayer, Board, Button, Confetti } from '../../../components'
-  import { game, winner } from '../../../stores'
+  import { ActivePlayer, Board, Button, Confetti } from '$lib/components'
+  import { game, winner } from '$lib/stores'
 
   /**
    * @type {{ players: number }}

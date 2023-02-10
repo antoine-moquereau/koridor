@@ -1,9 +1,9 @@
 <script>
   // import { navigating } from '$app/stores'
 
-  import { PopOver /*, SplashScreen*/ } from '../components'
-  import { Header, Theme } from '../layouts'
-  import { popup } from '../stores'
+  import { PopOver /*, SplashScreen*/ } from '$lib/components'
+  import { Header, Theme } from '$lib/layouts'
+  import { popup } from '$lib/stores'
 
   // $: console.log('navigating', $navigating)
 </script>

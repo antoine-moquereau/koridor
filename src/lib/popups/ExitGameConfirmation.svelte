@@ -1,6 +1,6 @@
 <script>
-  import { Button, Loading } from '../components'
-  import { popup } from '../stores'
+  import { Button, Loading } from '$lib/components'
+  import { popup } from '$lib/stores'
 
   /**
    * @type {Function | undefined}

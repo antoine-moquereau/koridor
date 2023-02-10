@@ -1,10 +1,10 @@
 <script>
   import { fly } from 'svelte/transition'
 
-  import { SIZE } from './../../../constants'
+  import { SIZE } from '$lib/constants'
   import Fence from './Fence.svelte'
   import Pawn from './Pawn.svelte'
-  import { activePlayerPointOfView, game } from './../../../stores'
+  import { activePlayerPointOfView, game } from '$lib/stores'
 
   /**
    * @type {{ index: number; marked: boolean; player: number; shortestPath: string; }}

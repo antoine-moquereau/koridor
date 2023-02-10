@@ -1,8 +1,8 @@
 <script>
   import { browser } from '$app/environment'
 
-  import { Dark as DarkIcon, Light as LightIcon } from '../icons'
-  import { color } from '../stores'
+  import { Dark as DarkIcon, Light as LightIcon } from '$lib/icons'
+  import { color } from '$lib/stores'
 
   function handleChange() {
     color.change()

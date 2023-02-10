@@ -1,8 +1,8 @@
 <script>
   import { fade } from 'svelte/transition'
 
-  import { popup } from '../stores'
-  import { clickOutside } from '../utilities'
+  import { popup } from '$lib/stores'
+  import { clickOutside } from '$lib/utilities'
 
   function handleOutsideClick() {
     popup.set({})
