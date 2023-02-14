@@ -7,7 +7,7 @@
 </script>
 
 {#key player}
-  <div in:fly={{ y: -100 }} out:fly={{ y: 100 }} class="player{player}">
+  <div in:fly={{ y: -100 }} out:fly|local={{ y: 100 }} class="player{player}">
     Player {player}'s turn
   </div>
 {/key}

@@ -1,8 +1,4 @@
 <script>
-  import { browser } from '$app/environment'
-
-  if (browser) import('vanilla-colorful')
-
   import { color as colorStore } from '$lib/stores'
 
   let color = $colorStore.light

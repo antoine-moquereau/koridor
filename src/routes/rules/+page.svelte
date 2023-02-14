@@ -1,33 +1,12 @@
 <script>
+  import { browser } from '$app/environment'
   import { beforeNavigate } from '$app/navigation'
-  import { navigating } from '$app/stores'
-  import { onMount } from 'svelte'
+  import { onDestroy } from 'svelte'
   import { fade, scale, fly } from 'svelte/transition'
 
   import { Board, Button, Confetti } from '$lib/components'
-  import { game, winner } from '$lib/stores'
+  import { game } from '$lib/stores'
 
-  /**
-   * @typedef {'horizontal' | 'vertical'} Orientation
-   */
-
-  /**
-   * @type {{ orientation: Orientation | undefined; position: number | undefined; }}
-   */
-  let fenceHover = { orientation: undefined, position: undefined }
-
-  game.set(2)
-
-  let restart = {}
-
-  function handleReplay() {
-    restart = {}
-    game.set(2)
-    key = -1
-    loop(1000)
-  }
-
-  let key = -1
   let actions = [
     ['move', 13],
     ['move', 67],
@@ -39,11 +18,10 @@
     ['placeHorizontalFence', 42],
     // Wall cannot block only path to opposite side
     ['horizontal', 40],
-    [undefined, undefined],
+    [,],
     ['move', 31],
     ['horizontal', 40],
-    [undefined, undefined],
-
+    [,],
     ['move', 58],
     ['move', 40],
     ['move', 49],
@@ -61,17 +39,54 @@
     ['placeHorizontalFence', 63],
     ['move', 65],
     ['move', 13],
+    ['placeHorizontalFence', 4],
+    ['placeVerticalFence', 2],
+    ['placeVerticalFence', 12],
+    ['placeHorizontalFence', 13],
+    ['placeHorizontalFence', 6],
+    ['placeHorizontalFence', 15],
     ['move', 66],
+    ['move', 14],
+    ['move', 67],
+    ['move', 15],
+    ['move', 68],
+    ['move', 16],
+    ['move', 68],
+    ['placeVerticalFence', 59],
+    ['move', 59],
+    ['move', 17],
+    ['move', 50],
     // The goal is to reach the opposite side with your pawn first
-    ['move', 4]
+    ['move', 8]
   ]
-
-  let confetti = true
-
+  let confetti = false
+  let demo = false
+  /**
+   * @typedef {'horizontal' | 'vertical'} Orientation
+   */
+  /**
+   * @type {{ orientation: Orientation | undefined; position: number | undefined; }}
+   */
+  let fenceHover = { orientation: undefined, position: undefined }
+  let key = -1
+  let restart = {}
   /**
    * @type {NodeJS.Timeout}
    */
   let timeout
+
+  beforeNavigate(() => {
+    clearTimeout(timeout)
+  })
+
+  function handleDemo() {
+    game.set(2)
+    restart = {}
+    key = -1
+    confetti = true
+    demo = true
+    loop(1000)
+  }
 
   /**
    * @param {number | undefined} delay
@@ -98,6 +113,8 @@
           return
         }
         case actions.length: {
+          demo = false
+          confetti = true
           setTimeout(() => {
             confetti = false
           }, 4000)
@@ -107,30 +124,23 @@
           const [action, position] = actions[key]
           // @ts-ignore
           game[action](position)
-          loop([7, 15, 27].includes(key) ? 1200 : 400)
+          loop(key === 15 ? 1200 : 500)
           return
         }
       }
     }, delay)
   }
 
-  beforeNavigate(() => {
+  onDestroy(() => {
     clearTimeout(timeout)
-  })
-
-  onMount(() => {
-    loop(!$navigating ? 700 : 1700)
-    return () => {
-      clearTimeout(timeout)
-    }
   })
 </script>
 
 {#key restart}
-  <div class="Wrapper" transition:fade>
-    {#if $winner}
+  <div class="Wrapper" transition:fade|local>
+    {#if !demo}
       <div class="CongratulationsWrapper">
-        <div class="Congratulations" transition:fade>
+        <div class="Congratulations" transition:fade|local>
           {#if confetti}
             <div transition:fade>
               <Confetti />
@@ -146,7 +156,12 @@
               <li>The goal is to reach the opposite side with your pawn first</li>
             </ul>
             <nav>
-              <Button class="Button" on:click={handleReplay}>Replay</Button>
+              <div class="Suspense" style={!browser ? '--animation-name: suspense;' : undefined}>
+                <Button class="Button" on:click={handleDemo}>Demo</Button>
+                {#if !browser}
+                  <div transition:fade />
+                {/if}
+              </div>
               <a href="/"> Play </a>
             </nav>
           </section>
@@ -156,8 +171,8 @@
       <div
         class="RulesWrapper"
         class:fenceHover={fenceHover.position}
-        in:fade={{ delay: 900, duration: 700 }}
-        out:fade
+        in:fade|local={{ delay: 900, duration: 700 }}
+        out:fade|local
       >
         <div>
           <Board {fenceHover} />
@@ -174,7 +189,7 @@
             {#if key > 7}
               <li in:fly={{ x: 200 }}>Wall cannot block only path to opposite side</li>
             {/if}
-            {#if key > 16}
+            {#if key > 14}
               <li in:fly={{ x: 200 }}>Pawns can jump over other pawns, but not over walls</li>
             {/if}
             {#if key > 22}
@@ -182,6 +197,7 @@
                 The goal is to reach the opposite side with your pawn first
               </li>
             {/if}
+            <li style="visibility: hidden;">On each turn, a player can move their pawn straight or place a wall</li>
           </ul>
         </div>
         <div class="Overlay" />
@@ -209,6 +225,9 @@
     position: relative;
   }
   .RulesWrapper .Rules {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
     margin: 14vh 2vh auto;
     overflow: hidden;
     position: relative;
@@ -256,9 +275,23 @@
   nav {
     text-align: center;
   }
-  nav :global(.Button) {
+  .Suspense {
     display: block;
     margin: 3vh 0;
+    position: relative;
+  }
+  .Suspense div {
+    animation-delay: 0.7s;
+    animation-direction: alternate;
+    animation-duration: 0.7s;
+    animation-iteration-count: infinite;
+    animation-name: var(--animation-name, none);
+    border-radius: 1vh;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
   a {
     display: block;

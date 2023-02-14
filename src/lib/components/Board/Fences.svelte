@@ -24,7 +24,7 @@
   {#each new Array(FENCES / players).fill(false) as _, i (i)}
     <div class="Fence-wrapper">
       {#if $game.fences.available[player] > i}
-        <div class="Fence" out:sendFence={{ key: player * 10 + i }} />
+        <div class="Fence" out:sendFence|local={{ key: player * 10 + i }} />
       {/if}
     </div>
   {/each}

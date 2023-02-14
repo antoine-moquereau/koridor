@@ -1,6 +1,4 @@
 <script>
-  import { scale } from 'svelte/transition'
-
   import { SIZE } from '$lib/constants'
   import Fences from './Fences.svelte'
   import Space from './Space'
@@ -68,7 +66,6 @@
   <div
     class={`Board player${$game.activePlayer + 1}`}
     class:fourPlayers
-    transition:scale={{ duration: 900 }}
   >
     {#if fourPlayers}
       <Fences {...{ player: 3, sendFence }} />

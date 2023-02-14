@@ -1,11 +1,7 @@
 <script>
-  // import { navigating } from '$app/stores'
-
-  import { PopOver /*, SplashScreen*/ } from '$lib/components'
+  import { PopOver } from '$lib/components'
   import { Header, Theme } from '$lib/layouts'
   import { popup } from '$lib/stores'
-
-  // $: console.log('navigating', $navigating)
 </script>
 
 <Theme>
@@ -14,7 +10,6 @@
     <slot />
   </main>
   <PopOver />
-  <!-- TODO SplashScreen /-->
 </Theme>
 
 <style>

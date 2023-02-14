@@ -1,7 +1,8 @@
 <script>
+  import { browser } from '$app/environment'
   import { fade, scale } from 'svelte/transition'
 
-  import { ActivePlayer, Board, Button, Confetti } from '$lib/components'
+  import { ActivePlayer, Board, Button, Confetti, Loading } from '$lib/components'
   import { game, winner } from '$lib/stores'
 
   /**
@@ -17,13 +18,15 @@
 </script>
 
 {#if !$winner}
-  <div transition:fade={{ duration: 700 }}>
+  <div transition:fade|local={{ duration: 700 }} class="Game" style={!browser ? '--blur-overlay: 2px;' : undefined}>
     <ActivePlayer />
     <Board />
   </div>
 {:else}
-  <div class="Congratulations" transition:fade>
-    <Confetti />
+  <div class="Congratulations" transition:fade|local>
+    <div transition:fade>
+      <Confetti />
+    </div>
     <section transition:scale>
       <h1>Congratulations</h1>
       {#if $winner}
@@ -37,7 +40,32 @@
   </div>
 {/if}
 
+{#if !browser}
+  <div class="Loading">
+    <Loading />
+    Loading
+  </div>
+{/if}
+
 <style>
+  @keyframes game {
+    0% {
+      filter: blur(0);
+    }
+    100% {
+      filter: blur(0);
+    }
+  }
+  .Game {
+    animation: 0.7s game;
+    border: 0;
+    display: block;
+    filter: blur(var(--blur-overlay, 0));
+    height: 100vh;
+    position: fixed;
+    transition: filter 0.9s;
+    width: 100vw;
+  }
   .Congratulations {
     display: flex;
     height: 100vh;
@@ -91,5 +119,36 @@
   a {
     font-size: 1.7vh;
     margin-top: 4vh;
+  }
+  @keyframes loading-start {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes loading-end {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  .Loading {
+    align-items: center;
+    animation: 0.7s loading-start, 0.7s 0.7s loading-end;
+    bottom: 0;
+    color: var(--font-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    overflow: hidden;
+    z-index: 999;
   }
 </style>

@@ -40,7 +40,7 @@
 {#if boardFences.includes(position)}
   <div
     class="Fence"
-    in:receiveFence={{ key: previousPlayer * 10 + $game.fences.available[previousPlayer] }}
+    in:receiveFence|local={{ key: previousPlayer * 10 + $game.fences.available[previousPlayer] }}
   />
 {:else if $game.fences.available[$game.activePlayer] > 0 && error.some(el => el.position === position)}
   <div
