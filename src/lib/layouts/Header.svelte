@@ -111,8 +111,8 @@
   .clickable {
     cursor: pointer;
   }
-  a:hover {
-    text-decoration: none;
+  a::after {
+    content: none;
   }
   h1 {
     align-items: center;

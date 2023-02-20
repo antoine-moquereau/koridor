@@ -197,7 +197,9 @@
                 The goal is to reach the opposite side with your pawn first
               </li>
             {/if}
-            <li style="visibility: hidden;">On each turn, a player can move their pawn straight or place a wall</li>
+            <li style="visibility: hidden;">
+              On each turn, a player can move their pawn straight or place a wall
+            </li>
           </ul>
         </div>
         <div class="Overlay" />
@@ -254,7 +256,7 @@
     flex-direction: column;
     justify-content: space-evenly;
     margin: auto;
-    padding: 0 15%;
+    padding: 0 6vh;
     transition: border 0.7s, box-shadow 0.7s;
     z-index: 2;
   }
@@ -277,7 +279,7 @@
   }
   .Suspense {
     display: block;
-    margin: 3vh 0;
+    margin: 3vh 0 0;
     position: relative;
   }
   .Suspense div {
@@ -294,7 +296,7 @@
     top: 0;
   }
   a {
-    display: block;
+    display: inline-block;
     font-size: 1.7vh;
     margin: 4vh;
   }

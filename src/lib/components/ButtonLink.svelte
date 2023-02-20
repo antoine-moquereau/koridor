@@ -36,4 +36,7 @@
     text-decoration: none;
     transform: scale(1.12);
   }
+  a::after {
+    content: none;
+  }
 </style>

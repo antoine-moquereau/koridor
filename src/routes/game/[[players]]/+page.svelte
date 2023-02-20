@@ -18,7 +18,11 @@
 </script>
 
 {#if !$winner}
-  <div transition:fade|local={{ duration: 700 }} class="Game" style={!browser ? '--blur-overlay: 2px;' : undefined}>
+  <div
+    transition:fade|local={{ duration: 700 }}
+    class="Game"
+    style={!browser ? '--blur-overlay: 2px;' : undefined}
+  >
     <ActivePlayer />
     <Board />
   </div>

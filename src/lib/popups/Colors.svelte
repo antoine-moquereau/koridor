@@ -34,8 +34,12 @@
   <div class="triangle" />
   <hex-color-picker class="Picker" {color} on:color-changed={handleColorChanged} />
   <div class="colors">
-    {#each colors as color}
-      <button style="--color: {color};" on:click={handleColor(color)} />
+    {#each colors as suggestedColor}
+      <button
+        class:selected={suggestedColor === color}
+        style="--color: {suggestedColor};"
+        on:click={handleColor(suggestedColor)}
+      />
     {/each}
   </div>
 </section>
@@ -94,6 +98,9 @@
   }
   button:hover {
     box-shadow: 0 0 1.4vh var(--color);
+  }
+  .selected {
+    outline: 2px solid #fff;
   }
 
   @media (max-aspect-ratio: 1/1) {

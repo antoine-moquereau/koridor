@@ -16,6 +16,7 @@
     --transparent33-font-color={browser ? $color.transparentFont33 : 'inherit'}
     --transparent99-font-color={browser ? $color.transparentFont99 : 'inherit'}
     --transparentcc-font-color={browser ? $color.transparentFontcc : 'inherit'}
+    --link-color={browser ? $color.link : 'inherit'}
   >
     <slot />
   </Wrapper>
@@ -34,6 +35,7 @@
       --transparent99-font-color: #fff9;
       --transparentcc-font-color: #fffc;
       --light-display: none;
+      --link-color: #9fa8ff;
     }
   }
   @media (prefers-color-scheme: light) {
@@ -48,6 +50,7 @@
       --transparent99-font-color: #0009;
       --transparentcc-font-color: #000c;
       --dark-display: none;
+      --link-color: #3344dd;
     }
   }
 </style>

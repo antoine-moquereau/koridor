@@ -25,14 +25,26 @@ textarea {
 }
 
 a {
-  color: #646cff;
+  color: var(--link-color);
   font-weight: 500;
+  position: relative;
   text-decoration: none;
 }
 
-a:hover {
-  color: #646cffe9;
-  text-decoration: underline;
+a::after {
+  background-color: var(--link-color);
+  bottom: -0.3em;
+  content: '';
+  height: 2px;
+  position: absolute;
+  right: 0;
+  transition: scale 0.2s ease-in-out;
+  scale: 0 0 0;
+  width: 100%;
+}
+
+a:hover::after {
+  scale: 1.3 1 1;
 }
 
 a,

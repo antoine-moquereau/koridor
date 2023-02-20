@@ -63,10 +63,7 @@
 </script>
 
 {#key fourPlayers}
-  <div
-    class={`Board player${$game.activePlayer + 1}`}
-    class:fourPlayers
-  >
+  <div class={`Board player${$game.activePlayer + 1}`} class:fourPlayers>
     {#if fourPlayers}
       <Fences {...{ player: 3, sendFence }} />
     {/if}
