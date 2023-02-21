@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://koridor.cc" target="_blank" rel="noopener noreferrer">
-    <img src="public/koridor.svg" width="160" alt="Koridor logo">
+    <img src="static/koridor.svg" width="128" alt="Koridor logo">
   </a>
 </p>
 
@@ -13,12 +13,12 @@ This is a development version. v1.0.0 should contain many more features.
 Feature todos:
 
 - [x] Desktop core
-- [ ] Better mobile support using drag and drop actions
+- [ ] Mobile support using drag and drop actions
 - [ ] History of moves played and possibility of going back
 - [ ] Online with chat
 - [ ] Versus Bots
 
 Tech todos:
 
-- [ ] SvelteKit with JSDoc Typechecking migration
+- [x] SvelteKit with JSDoc Typechecking migration
 - [ ] End-to-end tests

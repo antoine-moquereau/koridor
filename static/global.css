@@ -1,0 +1,57 @@
+:root {
+  color-scheme: light dark;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+    'Helvetica Neue', sans-serif;
+  font-synthesis: none;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  width: 100%;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+a {
+  color: var(--link-color);
+  font-weight: 500;
+  position: relative;
+  text-decoration: none;
+}
+
+a::after {
+  background-color: var(--link-color);
+  bottom: -0.3em;
+  content: '';
+  height: 2px;
+  position: absolute;
+  right: 0;
+  transition: scale 0.2s ease-in-out;
+  scale: 0 0 0;
+  width: 100%;
+}
+
+a:hover::after {
+  scale: 1.3 1 1;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
