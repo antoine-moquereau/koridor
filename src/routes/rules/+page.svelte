@@ -1,10 +1,9 @@
 <script>
-  import { browser } from '$app/environment'
   import { beforeNavigate } from '$app/navigation'
   import { onDestroy } from 'svelte'
   import { fade, scale, fly } from 'svelte/transition'
 
-  import { Board, Button, Confetti } from '$lib/components'
+  import { Board, Button, Confetti, Suspense } from '$lib/components'
   import { game } from '$lib/stores'
 
   let actions = [
@@ -156,12 +155,9 @@
               <li>The goal is to reach the opposite side with your pawn first</li>
             </ul>
             <nav>
-              <div class="Suspense" style={!browser ? '--animation-name: suspense;' : undefined}>
-                <Button class="Button" on:click={handleDemo}>Demo</Button>
-                {#if !browser}
-                  <div transition:fade />
-                {/if}
-              </div>
+              <Suspense --border-radius="1vh">
+                <Button on:click={handleDemo}>Demo</Button>
+              </Suspense>
               <a href="/"> Play </a>
             </nav>
           </section>
@@ -275,25 +271,8 @@
     font-size: 1.4rem;
   }
   nav {
-    text-align: center;
-  }
-  .Suspense {
-    display: block;
     margin: 3vh 0 0;
-    position: relative;
-  }
-  .Suspense div {
-    animation-delay: 0.7s;
-    animation-direction: alternate;
-    animation-duration: 0.7s;
-    animation-iteration-count: infinite;
-    animation-name: var(--animation-name, none);
-    border-radius: 1vh;
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
+    text-align: center;
   }
   a {
     display: inline-block;

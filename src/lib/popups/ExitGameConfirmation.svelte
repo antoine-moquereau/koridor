@@ -7,6 +7,10 @@
    */
   let confirm = undefined
   export { confirm as handleConfirm }
+  /**
+   * @type {string}
+   */
+  export let href
   export let navigation = false
 
   let loading = false
@@ -28,7 +32,7 @@
       <Button class="Button" on:click={handleCancel}>
         No<span>, <br />I continue the game</span>
       </Button>
-      <Button class="Button" on:click={handleConfirm}>
+      <Button class="Button" on:click={handleConfirm} {href}>
         Yes<span>, <br />I capitulate</span>
       </Button>
     </nav>

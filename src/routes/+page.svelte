@@ -1,17 +1,17 @@
 <script>
   import { fade } from 'svelte/transition'
 
-  import { ButtonLink } from '$lib/components'
+  import { Button } from '$lib/components'
   import { Local2 as Local2Icon, Local4 as Local4Icon } from '$lib/icons'
 </script>
 
 <nav transition:fade|local={{ duration: 250 }}>
-  <ButtonLink class="Button" href="/game">
+  <Button class="Button" href="/game">
     <Local2Icon />2 Players
-  </ButtonLink>
-  <ButtonLink class="Button" href="/game/4">
+  </Button>
+  <Button class="Button" href="/game/4">
     <Local4Icon />4 Players
-  </ButtonLink>
+  </Button>
 </nav>
 
 <a href="rules">Rules</a>

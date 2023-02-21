@@ -2,15 +2,14 @@
   import { browser } from '$app/environment'
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
-  import { fade } from 'svelte/transition'
 
   if (browser) import('vanilla-colorful')
 
-  import ColorModePicker from './ColorModePicker.svelte'
-  import ColorPicker from './ColorPicker.svelte'
+  import { Suspense } from '$lib/components'
   import { GitHub as GitHubIcon, Koridor as KoridorIcon } from '$lib/icons'
   import { ExitGameConfirmation } from '$lib/popups'
   import { popup, winner } from '$lib/stores'
+  import { ColorModePicker, ColorPicker } from './Pickers'
 
   $: isInGame = $page.route.id === '/game/[[players]]' && !$winner
 
@@ -25,7 +24,8 @@
         props: {
           handleConfirm: () => {
             goto('/')
-          }
+          },
+          href: '/'
         }
       })
     }
@@ -43,6 +43,7 @@
           handleConfirm: () => {
             location.assign('https://github.com/antoine-moquereau/koridor')
           },
+          href: 'https://github.com/antoine-moquereau/koridor',
           navigation: true
         }
       })
@@ -63,18 +64,12 @@
     </h1>
   </a>
   <div class="Side">
-    <div class="Suspense" style={!browser ? '--animation-name: suspense;' : undefined}>
+    <Suspense --border-radius="50%" --z-index="2">
       <ColorPicker />
-      {#if !browser}
-        <div transition:fade />
-      {/if}
-    </div>
-    <div class="Suspense" style={!browser ? '--animation-name: suspense;' : undefined}>
+    </Suspense>
+    <Suspense --border-radius="50%" --z-index="2">
       <ColorModePicker />
-      {#if !browser}
-        <div transition:fade />
-      {/if}
-    </div>
+    </Suspense>
     <a
       class="GitHub"
       href="https://github.com/antoine-moquereau/koridor"
@@ -163,33 +158,5 @@
   }
   .GitHub:hover :global(svg) {
     fill: var(--transparent99-font-color);
-  }
-  @keyframes -global-suspense {
-    0% {
-      background-color: var(--light-color);
-      opacity: 0.4;
-    }
-    100% {
-      background-color: var(--normal-color);
-      opacity: 0.8;
-    }
-  }
-  .Suspense {
-    display: flex;
-    height: 3.6vh;
-    width: 3.6vh;
-    z-index: 1;
-  }
-  .Suspense div {
-    animation-delay: 0.7s;
-    animation-direction: alternate;
-    animation-duration: 0.7s;
-    animation-iteration-count: infinite;
-    animation-name: var(--animation-name, none);
-    border-radius: 50%;
-    height: 3.6vh;
-    position: absolute;
-    width: 3.6vh;
-    z-index: 2;
   }
 </style>

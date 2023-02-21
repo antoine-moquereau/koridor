@@ -1,17 +1,12 @@
 <script>
-  import { Palette as PaletteIcon } from '$lib/icons'
-  import { Colors } from '$lib/popups'
-  import { popup } from '$lib/stores'
-
-  function handleColors() {
-    popup.set({
-      component: Colors
-    })
-  }
+  /**
+   * @type {string}
+   */
+  export let title
 </script>
 
-<button title="Change Color" type="button" on:click={handleColors}>
-  <PaletteIcon />
+<button {title} type="button" on:click>
+  <slot />
 </button>
 
 <style>
@@ -21,7 +16,7 @@
     border-radius: 50%;
     box-shadow: 0 0 0.7vh var(--transparent99-font-color);
     cursor: pointer;
-    display: flex;
+    display: var(--display, flex);
     height: 3.6vh;
     padding: 0.7vh;
     transition: box-shadow 0.2s ease 0s;
@@ -33,6 +28,7 @@
     box-shadow: 0 0 1vh var(--transparentcc-font-color);
   }
   button :global(svg) {
+    display: block;
     fill: var(--font-color);
     height: 80%;
     margin: auto;
