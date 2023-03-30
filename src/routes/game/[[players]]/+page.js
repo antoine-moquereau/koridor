@@ -8,7 +8,7 @@ export function load({ params }) {
   if (!params.players) {
     players = 2
   } else if (!['2', '4'].includes(params.players)) {
-    throw error(404)
+    throw error(404, 'Not Found')
   } else {
     players = parseInt(params.players, 10)
   }
