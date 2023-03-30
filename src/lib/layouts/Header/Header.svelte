@@ -11,7 +11,7 @@
   import { popup, winner } from '$lib/stores'
   import { ColorModePicker, ColorPicker } from './Pickers'
 
-  $: isInGame = $page.route.id === '/game/[[players]]' && !$winner
+  $: isInGame = $page.route.id === '/game/[[players]]' && !$winner && $page.status === 200
 
   /**
    * @param {Event} event
