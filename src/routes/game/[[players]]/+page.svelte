@@ -84,7 +84,6 @@
     border: 1px solid var(--normal-color);
     border-radius: 5vh;
     box-shadow: 0 0 1vh var(--dark-color);
-    color: var(--font-color);
     display: flex;
     flex-direction: column;
     height: 58vh;
@@ -144,7 +143,6 @@
     align-items: center;
     animation: 0.7s loading-start, 0.7s 0.7s loading-end;
     bottom: 0;
-    color: var(--font-color);
     display: flex;
     flex-direction: column;
     justify-content: center;

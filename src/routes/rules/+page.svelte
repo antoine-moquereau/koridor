@@ -214,7 +214,6 @@
   .RulesWrapper,
   .CongratulationsWrapper {
     display: flex;
-    color: var(--font-color);
     justify-content: center;
     width: 100vw;
   }
@@ -247,7 +246,6 @@
     border: none;
     border-radius: 5vh;
     box-shadow: none;
-    color: var(--font-color);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;

@@ -50,7 +50,6 @@
     border: 1px solid var(--normal-color);
     border-radius: 2vh;
     box-shadow: 0 0 1vh var(--dark-color);
-    color: var(--font-color);
     padding: 2vh;
     position: fixed;
     right: 9vh;

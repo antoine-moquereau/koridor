@@ -15,7 +15,6 @@
 <style>
   div {
     align-items: center;
-    color: var(--font-color);
     display: flex;
     font-size: 1.7vh;
     justify-content: center;

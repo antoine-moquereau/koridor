@@ -53,7 +53,6 @@
     border: 1px solid var(--normal-color);
     border-radius: 2vh;
     box-shadow: 0 0 1vh var(--dark-color);
-    color: var(--font-color);
     flex-direction: column;
     font-size: 2vh;
     max-width: 86vw;
