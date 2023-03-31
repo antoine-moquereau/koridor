@@ -3,14 +3,15 @@
   import { game } from '$lib/stores'
 
   /**
+   * @typedef {import('$lib/types').CrossfadeTransition} CrossfadeTransition
+   */
+
+  /**
    * @type {number}
    */
   export let player
   /**
-   * @type {(
-      node: Element,
-      params: import('svelte/transition').CrossfadeParams & { key: any; }
-    ) => () => import('svelte/transition').TransitionConfig}
+   * @type {CrossfadeTransition}
    */
   export let sendFence
 

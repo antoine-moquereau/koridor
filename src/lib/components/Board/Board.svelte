@@ -8,13 +8,15 @@
   const [sendFence, receiveFence] = crossfadeTransition()
 
   /**
-   * @typedef {'horizontal' | 'vertical'} Orientation
+   * @typedef {import('$lib/types').FenceHover} FenceHover
+   * @typedef {import('$lib/types').Orientation} Orientation
+   * @typedef {import('$lib/types').SpaceError} SpaceError
    */
 
   /**
-   * @type {{ orientation: Orientation | undefined; position: number | undefined; }}
+   * @type {FenceHover}
    */
-  export let fenceHover = { orientation: undefined, position: undefined }
+  export let fenceHover = {}
 
   /**
    * @param {Orientation} orientation
@@ -30,7 +32,7 @@
   }
 
   /**
-   * @type {((position: number) => { index: number; marked: boolean; player: number; shortestPath: string; })}
+   * @type {((position: number) => SpaceError)}
    */
   let error
 

@@ -6,8 +6,8 @@ import a11yPlugin from 'colord/plugins/a11y'
 extend([a11yPlugin])
 
 /**
- * @param {import('colord').colord} color
- * @param {import('colord').colord} backgroundColor
+ * @param {import('colord').Colord} color
+ * @param {import('colord').Colord} backgroundColor
  * @param {boolean} isDark
  * @param {number} ratio
  * @returns {string}

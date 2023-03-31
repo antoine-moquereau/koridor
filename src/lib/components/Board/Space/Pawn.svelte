@@ -8,7 +8,7 @@
   /**
    * @type {number | undefined}
    */
-  let key = undefined
+  let key
   export { key as player }
 </script>
 

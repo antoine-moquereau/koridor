@@ -6,7 +6,11 @@
   import { game, winner } from '$lib/stores'
 
   /**
-   * @type {{ players: number }}
+   * @typedef {import('$lib/types').Players} Players
+   */
+
+  /**
+   * @type {{ players: Players }}
    */
   export let data
 

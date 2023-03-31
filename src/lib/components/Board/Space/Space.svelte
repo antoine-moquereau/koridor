@@ -7,11 +7,17 @@
   import { activePlayerPointOfView, game } from '$lib/stores'
 
   /**
-   * @type {{ index: number; marked: boolean; player: number; shortestPath: string; }}
+   * @typedef {import('$lib/types').CrossfadeTransition} CrossfadeTransition
+   * @typedef {import('$lib/types').Orientation} Orientation
+   * @typedef {import('$lib/types').SpaceError} SpaceError
+   */
+
+  /**
+   * @type {SpaceError}
    */
   export let error
   /**
-   * @type {(orientation: 'horizontal' | 'vertical') => (position: number) => void}
+   * @type {(orientation: Orientation) => (position: number) => void}
    */
   export let handleFenceHover
   /**
@@ -23,10 +29,7 @@
    */
   export let position
   /**
-   * @type {(
-      node: Element,
-      params: import('svelte/transition').CrossfadeParams & { key: any; }
-    ) => () => import('svelte/transition').TransitionConfig}
+   * @type {CrossfadeTransition}
    */
   export let receiveFence
 

@@ -11,6 +11,11 @@ import {
 } from './graph'
 
 /**
+ * @typedef {import('$lib/types').Error} Error
+ * @typedef {import('$lib/types').Players} Players
+ */
+
+/**
  * @typedef {Object} Positions
  * @property {number[]} horizontal
  * @property {number[]} vertical
@@ -32,7 +37,7 @@ import {
  */
 
 /**
- * @param {number} players - TODO: 2 | 4
+ * @param {Players} players
  * @returns {Game}
  */
 const defaultGame = players => ({
@@ -122,7 +127,7 @@ function createGame() {
       }))
     },
     /**
-     * @param {number} players
+     * @param {Players} players
      */
     set: players => set(defaultGame(players))
   }
@@ -139,14 +144,6 @@ const winner = derived(game, $game => {
   })
   return winner
 })
-
-/**
- * @typedef {Object} Error
- * @property {number} position
- * @property {number[]} path
- * @property {number[]} shortestPath
- * @property {number} player
- */
 
 const activePlayerPointOfView = derived(game, $game => {
   const players = $game.playerPositions.length

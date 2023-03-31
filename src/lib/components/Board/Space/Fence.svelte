@@ -2,11 +2,16 @@
   import { game } from '$lib/stores'
 
   /**
+   * @typedef {import('$lib/types').CrossfadeTransition} CrossfadeTransition
+   * @typedef {import('$lib/types').Error} Error
+   */
+
+  /**
    * @type {number[]}
    */
   export let boardFences
   /**
-   * @type {import('$lib/stores/game/game.js').Error[]}
+   * @type {Error[]}
    */
   export let error
   /**
@@ -26,10 +31,7 @@
    */
   export let position
   /**
-   * @type {(
-      node: Element,
-      params: import('svelte/transition').CrossfadeParams & { key: any; }
-    ) => () => import('svelte/transition').TransitionConfig}
+   * @type {CrossfadeTransition}
    */
   export let receiveFence
 
