@@ -2,7 +2,7 @@
   import { browser } from '$app/environment'
   import { fade, scale } from 'svelte/transition'
 
-  import { ActivePlayer, Board, Button, Confetti, Loading } from '$lib/components'
+  import { ActivePlayer, Board, Button, Confetti, Loading, TouchActions } from '$lib/components'
   import { game, winner } from '$lib/stores'
 
   /**
@@ -29,6 +29,7 @@
   >
     <ActivePlayer />
     <Board />
+    <TouchActions />
   </div>
 {:else}
   <div class="Congratulations" transition:fade|local>

@@ -307,5 +307,16 @@
     li {
       font-size: 1rem;
     }
+    .RulesWrapper h1 {
+      font-size: 3.3vh;
+      margin-bottom: 0;
+      margin-top: 3vh;
+    }
+    .RulesWrapper ul {
+      margin: 0;
+    }
+    .RulesWrapper li {
+      font-size: 2vh;
+    }
   }
 </style>

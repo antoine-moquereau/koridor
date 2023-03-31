@@ -6,14 +6,14 @@
 
 # Koridor
 
-A [Svelte](https://svelte.dev) implementation of my favorite board game.
+A [SvelteKit](https://kit.svelte.dev) implementation of my favorite board game.
 
 This is a development version. v1.0.0 should contain many more features.
 
 Feature todos:
 
 - [x] Desktop core
-- [ ] Mobile support using drag and drop actions
+- [x] Mobile support using drag and drop actions
 - [ ] History of moves played and possibility of going back
 - [ ] Online with chat
 - [ ] Versus Bots
