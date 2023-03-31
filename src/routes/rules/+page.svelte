@@ -6,6 +6,10 @@
   import { Board, Button, Confetti, Suspense } from '$lib/components'
   import { game } from '$lib/stores'
 
+  /**
+   * @typedef {import('$lib/types').FenceHover} FenceHover
+   */
+
   let actions = [
     ['move', 13],
     ['move', 67],
@@ -61,12 +65,9 @@
   let confetti = false
   let demo = false
   /**
-   * @typedef {'horizontal' | 'vertical'} Orientation
+   * @type {FenceHover}
    */
-  /**
-   * @type {{ orientation: Orientation | undefined; position: number | undefined; }}
-   */
-  let fenceHover = { orientation: undefined, position: undefined }
+  let fenceHover = {}
   let key = -1
   let restart = {}
   /**
