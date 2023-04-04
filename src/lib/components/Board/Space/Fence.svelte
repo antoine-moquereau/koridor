@@ -1,4 +1,5 @@
 <script>
+  import { drop } from '$lib/dnd'
   import { game } from '$lib/stores'
 
   /**
@@ -34,6 +35,10 @@
    * @type {CrossfadeTransition}
    */
   export let receiveFence
+  /**
+   * @type {'HorizontalFence' | 'VerticalFence'}
+   */
+  export let type
 
   $: previousPlayer =
     $game.activePlayer === 0 ? $game.playerPositions.length - 1 : $game.activePlayer - 1
@@ -50,9 +55,21 @@
     on:focus={() => {}}
     on:mouseover={() => handleHover(position)}
     on:mouseleave={() => handleLeave()}
+    use:drop={{ type }}
+    on:dragenter={() => handleHover(position)}
+    on:dragleave={() => handleLeave()}
   />
 {:else if $game.fences.available[$game.activePlayer] > 0}
-  <div class="PlaceableFence" on:click={() => moveFenceTo(position)} on:keyup />
+  <div
+    class="PlaceableFence"
+    on:click={() => window.matchMedia('(hover: hover)').matches && moveFenceTo(position)}
+    on:keyup
+    use:drop={{ type }}
+    on:drop={() => {
+      handleLeave()
+      moveFenceTo(position)
+    }}
+  />
 {/if}
 
 <style>
@@ -78,9 +95,6 @@
     border-bottom: 6px dashed red;
     border-left: none;
   }
-  .Fence.marked:hover {
-    opacity: 1;
-  }
   .PlaceableFence {
     cursor: pointer;
     height: 100%;
@@ -88,52 +102,108 @@
     width: 100%;
     z-index: 2;
   }
-  .PlaceableFence:hover {
-    background-color: rgb(50 160 20);
-    outline: 1px solid var(--font-color);
+  @media (hover: hover) {
+    .Fence.marked:hover {
+      opacity: 1;
+    }
+    .PlaceableFence:hover {
+      background-color: rgb(50 160 20);
+      outline: 1px solid var(--font-color);
+    }
+    .PlaceableFence:hover::before {
+      border: 1px var(--font-color) solid;
+      box-sizing: border-box;
+      content: '';
+      position: absolute;
+      width: 100%;
+    }
+    .PlaceableFence:hover::after {
+      bottom: 0;
+      border: 1px var(--font-color) solid;
+      box-sizing: border-box;
+      content: '';
+      height: 2px;
+      position: absolute;
+      width: 100%;
+    }
+    :global(.Space-bottom) .PlaceableFence:hover::before {
+      height: 100%;
+      width: 2px;
+    }
+    :global(.Space-bottom) .PlaceableFence:hover::after {
+      height: 100%;
+      right: 0;
+      width: 2px;
+    }
+    :global(.Board.player1) .PlaceableFence:hover {
+      background-color: rgb(40 40 190 / 40%);
+    }
+    :global(.Board.player2) .PlaceableFence:hover {
+      background-color: rgb(190 40 40 / 40%);
+    }
+    :global(.Board.player3) .PlaceableFence:hover {
+      background-color: rgb(190 160 40 / 40%);
+    }
+    :global(.Board.player4) .PlaceableFence:hover {
+      background-color: rgb(40 160 40 / 40%);
+    }
+    :global(.Space-bottom) .PlaceableFence:hover {
+      transform: scaleY(2) translateY(12%);
+    }
+    :global(.Space-right) .PlaceableFence:hover {
+      transform: scaleX(2);
+    }
   }
-  .PlaceableFence:hover::before {
-    border: 1px black solid;
-    box-sizing: border-box;
-    content: '';
-    position: absolute;
-    width: 100%;
-  }
-  .PlaceableFence:hover::after {
-    bottom: 0;
-    border: 1px black solid;
-    box-sizing: border-box;
-    content: '';
-    height: 2px;
-    position: absolute;
-    width: 100%;
-  }
-  :global(.Space-bottom) .PlaceableFence:hover::before {
-    height: 100%;
-    width: 2px;
-  }
-  :global(.Space-bottom) .PlaceableFence:hover::after {
-    height: 100%;
-    right: 0;
-    width: 2px;
-  }
-  :global(.Board.player1) .PlaceableFence:hover {
-    background-color: rgb(40 40 190 / 40%);
-  }
-  :global(.Board.player2) .PlaceableFence:hover {
-    background-color: rgb(190 40 40 / 40%);
-  }
-  :global(.Board.player3) .PlaceableFence:hover {
-    background-color: rgb(190 160 40 / 40%);
-  }
-  :global(.Board.player4) .PlaceableFence:hover {
-    background-color: rgb(40 160 40 / 40%);
-  }
-
-  :global(.Space-bottom) .PlaceableFence:hover {
-    transform: scaleY(2) translateY(12%);
-  }
-  :global(.Space-right) .PlaceableFence:hover {
-    transform: scaleX(2);
+  @media (hover: none) {
+    .Fence.marked:global(.dragover) {
+      opacity: 1;
+    }
+    .PlaceableFence:global(.dragover) {
+      background-color: rgb(50 160 20);
+      outline: 1px solid var(--font-color);
+    }
+    .PlaceableFence:global(.dragover)::before {
+      border: 1px var(--font-color) solid;
+      box-sizing: border-box;
+      content: '';
+      position: absolute;
+      width: 100%;
+    }
+    .PlaceableFence:global(.dragover)::after {
+      bottom: 0;
+      border: 1px var(--font-color) solid;
+      box-sizing: border-box;
+      content: '';
+      height: 2px;
+      position: absolute;
+      width: 100%;
+    }
+    :global(.Space-bottom) .PlaceableFence:global(.dragover)::before {
+      height: 100%;
+      width: 2px;
+    }
+    :global(.Space-bottom) .PlaceableFence:global(.dragover)::after {
+      height: 100%;
+      right: 0;
+      width: 2px;
+    }
+    :global(.Board.player1) .PlaceableFence:global(.dragover) {
+      background-color: rgb(40 40 190 / 40%);
+    }
+    :global(.Board.player2) .PlaceableFence:global(.dragover) {
+      background-color: rgb(190 40 40 / 40%);
+    }
+    :global(.Board.player3) .PlaceableFence:global(.dragover) {
+      background-color: rgb(190 160 40 / 40%);
+    }
+    :global(.Board.player4) .PlaceableFence:global(.dragover) {
+      background-color: rgb(40 160 40 / 40%);
+    }
+    :global(.Space-bottom) .PlaceableFence:global(.dragover) {
+      transform: scaleY(2) translateY(12%);
+    }
+    :global(.Space-right) .PlaceableFence:global(.dragover) {
+      transform: scaleX(2);
+    }
   }
 </style>

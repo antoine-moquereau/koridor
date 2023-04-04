@@ -1,17 +1,10 @@
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  enable-background="new 0 0 24 24"
-  height="24px"
-  viewBox="0 0 24 24"
-  width="24px"
-  fill="#FFFFFF"
->
+<svg fill="#fff" height="24px" viewBox="0 0 24 24" width="24px">
   <mask id="circles">
-    <rect id="bg" x="0" y="0" width="100%" height="100%" fill="white" />
-    <circle fill="Black" cx="6.5" cy="11.5" r="1.5" />
-    <circle fill="Black" cx="9.5" cy="7.5" r="1.5" />
-    <circle fill="Black" cx="14.5" cy="7.5" r="1.5" />
-    <circle fill="Black" cx="17.5" cy="11.5" r="1.5" />
+    <rect id="bg" x="0" y="0" width="100%" height="100%" fill="#fff" />
+    <circle fill="#000" cx="6.5" cy="11.5" r="1.5" />
+    <circle fill="#000" cx="9.5" cy="7.5" r="1.5" />
+    <circle fill="#000" cx="14.5" cy="7.5" r="1.5" />
+    <circle fill="#000" cx="17.5" cy="11.5" r="1.5" />
   </mask>
   <rect fill="none" height="24" width="24" />
   <path

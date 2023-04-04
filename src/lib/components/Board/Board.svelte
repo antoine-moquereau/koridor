@@ -153,8 +153,18 @@
   .Board.player4 .Spaces {
     border-right-color: rgb(40, 160, 40, 67%);
   }
-
-  @media (max-aspect-ratio: 3/4) {
+  @media (hover: none) {
+    .Board {
+      height: 71.75vh;
+      margin: 14vh calc((100vw - 57.75vh) / 2) 0;
+      width: 57.75vh;
+    }
+    .Board.fourPlayers {
+      margin: 14vh calc((100vw - 71.75vh) / 2) 0;
+      width: 71.75vh;
+    }
+  }
+  @media (hover: hover) and (max-aspect-ratio: 3/4), (hover: none) and (max-aspect-ratio: 5/8) {
     .Board {
       height: 112.75vw;
       margin: max(calc((100vh - 112.75vw) / 2), 14vh) 4.625vw 0;
@@ -163,7 +173,7 @@
     }
     .Board.fourPlayers {
       height: 90.75vw;
-      margin: max(calc((100vh - 112.75vw) / 2), 14vh) 4.625vw 0;
+      margin: max(calc((100vh - 90.75vw) / 2), 14vh) 4.625vw 0;
       width: 90.75vw;
     }
     .Spaces {

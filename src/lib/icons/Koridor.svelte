@@ -1,11 +1,4 @@
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  aria-hidden="true"
-  role="img"
-  width="512"
-  height="512"
-  viewBox="0 0 512 512"
->
+<svg aria-hidden="true" height="512" role="img" viewBox="0 0 512 512" width="512">
   <path
     fill="#c39f00"
     d="m 222.12076,478.64894 -21.66586,-20.70471 71.74684,-71.10014 71.74685,-71.10015 v 54.95957 54.95956 l -37.37682,36.84527 -37.37681,36.84526 h -12.70417 -12.70417 z"

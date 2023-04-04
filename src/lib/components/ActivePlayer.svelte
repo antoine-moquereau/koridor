@@ -3,11 +3,12 @@
 
   import { game } from '$lib/stores'
 
+  $: fourPlayers = $game.playerPositions.length === 4
   $: player = $game.activePlayer + 1
 </script>
 
 {#key player}
-  <div in:fly={{ y: -100 }} out:fly|local={{ y: 100 }} class="player{player}">
+  <div in:fly={{ y: -100 }} out:fly|local={{ y: 100 }} class="player{player}" class:fourPlayers>
     Player {player}'s turn
   </div>
 {/key}
@@ -43,10 +44,14 @@
   .player4::before {
     background: rgb(40 160 40);
   }
-
   @media (max-aspect-ratio: 3/4) {
     div {
       top: max(calc((100vh - 112.75vw) / 2 - 9vw), 9vh);
+    }
+  }
+  @media (hover: none) and (max-aspect-ratio: 5/8) {
+    div.fourPlayers {
+      top: max(calc((100vh - 90.75vw) / 2 - 9vw), 9vh);
     }
   }
 </style>

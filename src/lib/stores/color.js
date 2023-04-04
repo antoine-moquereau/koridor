@@ -84,7 +84,7 @@ function createColor() {
    * @param {MediaQueryListEvent} event
    */
   const handleChange = event => (event.matches ? set(dark) : set(light))
-  mediaQueryList?.addEventListener('change', handleChange)
+  mediaQueryList?.addEventListener('change', handleChange, false)
 
   /**
    * @param {string} light
@@ -144,7 +144,7 @@ function createColor() {
      * @param {string=} color
      */
     change: color => {
-      mediaQueryList?.removeEventListener('change', handleChange)
+      mediaQueryList?.removeEventListener('change', handleChange, false)
       if (color) {
         set(darkestColors(color))
         return

@@ -1,10 +1,4 @@
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  enable-background="new 0 0 48 48"
-  viewBox="0 0 48 48"
-  height="48px"
-  width="48px"
->
+<svg height="48px" viewBox="0 0 48 48" width="48px">
   <g
     transform="matrix(1.3226102590560913, 0, 0, 1.3226102590560913, 0.19301466643810272, 8.128677368164062)"
   >
