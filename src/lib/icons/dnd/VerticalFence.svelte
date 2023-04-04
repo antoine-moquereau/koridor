@@ -1,9 +1,4 @@
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  stroke="currentcolor"
-  fill="currentcolor"
-  viewBox="0 0 48 48"
->
+<svg fill="currentcolor" stroke="currentcolor" viewBox="0 0 48 48">
   <path
     d="M31.121 34.248V2.53h6.63v22.572c-1.077.517-1.742 1.354-.04 4.047l.04 5.099z"
     style="fill:none;stroke-width:1.4"

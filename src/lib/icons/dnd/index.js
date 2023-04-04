@@ -1,0 +1,6 @@
+export { default as HorizontalFence } from './HorizontalFence.svelte'
+export { default as HorizontalFenceImage } from './HorizontalFenceImage.svelte'
+export { default as Pawn } from './Pawn.svelte'
+export { default as PawnImage } from './PawnImage.svelte'
+export { default as VerticalFence } from './VerticalFence.svelte'
+export { default as VerticalFenceImage } from './VerticalFenceImage.svelte'

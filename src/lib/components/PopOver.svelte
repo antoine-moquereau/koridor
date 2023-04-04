@@ -20,8 +20,8 @@
 <style>
   .PopOver {
     background-color: var(--transparent33-font-color);
-    bottom: 0;
     display: flex;
+    height: 100vh;
     left: 0;
     position: absolute;
     right: 0;

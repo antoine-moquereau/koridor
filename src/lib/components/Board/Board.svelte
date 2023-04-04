@@ -173,7 +173,7 @@
     }
     .Board.fourPlayers {
       height: 90.75vw;
-      margin: max(calc((100vh - 112.75vw) / 2), 14vh) 4.625vw 0;
+      margin: max(calc((100vh - 90.75vw) / 2), 14vh) 4.625vw 0;
       width: 90.75vw;
     }
     .Spaces {

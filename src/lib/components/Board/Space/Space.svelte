@@ -2,6 +2,7 @@
   import { fly } from 'svelte/transition'
 
   import { SIZE } from '$lib/constants'
+  import { drop } from '$lib/dnd'
   import Fence from './Fence.svelte'
   import Pawn from './Pawn.svelte'
   import { activePlayerPointOfView, game } from '$lib/stores'
@@ -34,7 +35,6 @@
   export let receiveFence
 
   let delayedError = false
-
   /**
    * @type {NodeJS.Timeout | undefined}
    */
@@ -67,7 +67,9 @@
       class:marked
       class:shortestPath
       style="--delay: {delay}ms; {!delayedError && player === -1 ? 'transition: none;' : ''}"
-      on:click={() => game.move(position)}
+      on:click={() => window.matchMedia('(hover: hover)').matches && game.move(position)}
+      use:drop={{ type: 'Pawn' }}
+      on:drop={() => game.move(position)}
     >
       {#key shortestPath}
         <div style={x ? 'height: 90%;' : undefined} in:fly={{ delay, x, y }}>
@@ -89,7 +91,6 @@
       {/key}
     </div>
   {/if}
-
   {#each $game.playerPositions as playerPosition, i}
     {#if position === playerPosition}
       <Pawn player={i + 1} />
@@ -109,12 +110,12 @@
           error: $activePlayerPointOfView.error.vertical,
           handleHover: handleFenceHover('vertical'),
           handleLeave: handleFenceLeave,
-          moveFenceTo: game.placeVerticalFence
+          moveFenceTo: game.placeVerticalFence,
+          type: 'VerticalFence'
         }}
       />
     </div>
   {/if}
-
   <!-- prettier-ignore -->
   {#if !$game.fences.positions.vertical.includes(position) &&
     !$game.fences.positions.horizontal.includes(position - 1) &&
@@ -129,7 +130,8 @@
           error: $activePlayerPointOfView.error.horizontal,
           handleHover: handleFenceHover('horizontal'),
           handleLeave: handleFenceLeave,
-          moveFenceTo: game.placeHorizontalFence
+          moveFenceTo: game.placeHorizontalFence,
+          type: 'HorizontalFence'
         }}
       />
     </div>
@@ -214,26 +216,45 @@
   .Space-wrapper:nth-child(9n) .Space-bottom {
     display: none;
   }
-  .Space.accessible:hover {
-    border: 2px solid var(--font-color);
-    cursor: pointer;
-  }
-  :global(.Board.player1) .Space.accessible:hover {
-    background-color: rgb(40 40 190 / 40%);
-  }
-  :global(.Board.player2) .Space.accessible:hover {
-    background-color: rgb(190 40 40 / 40%);
-  }
-  :global(.Board.player3) .Space.accessible:hover {
-    background-color: rgb(190 160 40 / 40%);
-  }
-  :global(.Board.player4) .Space.accessible:hover {
-    background-color: rgb(40 160 40 / 40%);
-  }
-
   @media (max-aspect-ratio: 3/4) {
     .Space {
       font-size: 4vw;
+    }
+  }
+  @media (hover: hover) {
+    .Space.accessible:hover {
+      border: 2px solid var(--font-color);
+      cursor: pointer;
+    }
+    :global(.Board.player1) .Space.accessible:hover {
+      background-color: rgb(40 40 190 / 40%);
+    }
+    :global(.Board.player2) .Space.accessible:hover {
+      background-color: rgb(190 40 40 / 40%);
+    }
+    :global(.Board.player3) .Space.accessible:hover {
+      background-color: rgb(190 160 40 / 40%);
+    }
+    :global(.Board.player4) .Space.accessible:hover {
+      background-color: rgb(40 160 40 / 40%);
+    }
+  }
+  @media (hover: none) {
+    .Space.accessible:global(.dragover) {
+      border: 2px solid var(--font-color);
+      cursor: pointer;
+    }
+    :global(.Board.player1) .Space.accessible:global(.dragover) {
+      background-color: rgb(40 40 190 / 40%);
+    }
+    :global(.Board.player2) .Space.accessible:global(.dragover) {
+      background-color: rgb(190 40 40 / 40%);
+    }
+    :global(.Board.player3) .Space.accessible:global(.dragover) {
+      background-color: rgb(190 160 40 / 40%);
+    }
+    :global(.Board.player4) .Space.accessible:global(.dragover) {
+      background-color: rgb(40 160 40 / 40%);
     }
   }
 </style>
