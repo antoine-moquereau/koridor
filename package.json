@@ -29,7 +29,7 @@
     "svelte-check": "^3.0.1",
     "typescript": "^4.9.3",
     "vanilla-colorful": "^0.7.2",
-    "vite": "^4.0.0"
+    "vite": "^4.5.3"
   },
   "type": "module"
 }
