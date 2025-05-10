@@ -58,6 +58,7 @@
     use:drop={{ type }}
     on:dragenter={() => handleHover(position)}
     on:dragleave={() => handleLeave()}
+    role="none"
   />
 {:else if $game.fences.available[$game.activePlayer] > 0}
   <div
@@ -69,6 +70,7 @@
       handleLeave()
       moveFenceTo(position)
     }}
+    role="none"
   />
 {/if}
 
@@ -79,7 +81,11 @@
     height: 100%;
     outline: 2px solid var(--font-color);
     position: relative;
-    transition: opacity 0.4s, background-color 0.4s, box-shadow 0.4s, outline 0.4s;
+    transition:
+      opacity 0.4s,
+      background-color 0.4s,
+      box-shadow 0.4s,
+      outline 0.4s;
     width: 100%;
     z-index: 2;
   }

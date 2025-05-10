@@ -13,6 +13,7 @@
   const element = type || 'a'
 </script>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <svelte:element this={element} class={className} {href} {type} on:click on:keyup>
   <slot />
 </svelte:element>

@@ -252,7 +252,9 @@
     justify-content: space-evenly;
     margin: auto;
     padding: 0 6vh;
-    transition: border 0.7s, box-shadow 0.7s;
+    transition:
+      border 0.7s,
+      box-shadow 0.7s;
     z-index: 2;
   }
   section.confetti {
