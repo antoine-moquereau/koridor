@@ -2,7 +2,7 @@ import { writable } from 'svelte/store'
 
 /**
  * @typedef {Object} Popup
- * @property {typeof import('svelte').SvelteComponent=} component
+ * @property {import('svelte').ComponentType=} component
  * @property {Object=} props
  */
 

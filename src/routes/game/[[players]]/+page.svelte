@@ -146,7 +146,9 @@
   }
   .Loading {
     align-items: center;
-    animation: 0.7s loading-start, 0.7s 0.7s loading-end;
+    animation:
+      0.7s loading-start,
+      0.7s 0.7s loading-end;
     bottom: 0;
     display: flex;
     flex-direction: column;

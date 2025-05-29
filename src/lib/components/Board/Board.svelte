@@ -108,7 +108,9 @@
     padding: 0.4vh 0;
     position: fixed;
     top: 0;
-    transition: background-color 0.4s, box-shadow 0.5s;
+    transition:
+      background-color 0.4s,
+      box-shadow 0.5s;
     width: 66vh;
   }
   .Board.fourPlayers {

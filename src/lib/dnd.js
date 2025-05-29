@@ -1,6 +1,6 @@
 /**
  * @typedef {Object} Image
- * @property {typeof import('svelte').SvelteComponent} component
+ * @property {import('svelte').ComponentType} component
  * @property {number} width
  * @property {number} height
  */

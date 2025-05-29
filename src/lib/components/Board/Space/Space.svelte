@@ -158,7 +158,9 @@
     position: absolute;
     right: 8%;
     top: 8%;
-    transition: background-color 0.3s var(--delay), border-color 0.3s var(--delay);
+    transition:
+      background-color 0.3s var(--delay),
+      border-color 0.3s var(--delay);
     width: 86%;
   }
   .Space.marked {
