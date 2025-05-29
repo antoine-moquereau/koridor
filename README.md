@@ -21,4 +21,31 @@ Feature todos:
 Tech todos:
 
 - [x] SvelteKit with JSDoc Typechecking migration
-- [ ] End-to-end tests
+- [x] End-to-end tests
+
+### End-to-End Testing
+
+This project uses [Playwright](https://playwright.dev/) for End-to-End (E2E) testing. These tests simulate user interactions in a real browser environment to verify application flows.
+
+**Setup:**
+
+1.  **Install Dependencies:** If you haven't already, install the project dependencies:
+    ```bash
+    npm install
+    ```
+
+2.  **Install Playwright Browsers:** Playwright requires browser binaries to run tests. While these might have been installed during the initial setup, if you've cloned the repository fresh or if browsers are missing, run:
+    ```bash
+    npx playwright install --with-deps
+    ```
+    The `--with-deps` flag will also install necessary operating system dependencies for the browsers.
+
+**Running Tests:**
+
+To execute the E2E test suite, run the following command:
+
+```bash
+npm run test:e2e
+```
+
+This command will launch the Playwright test runner, which will execute all tests defined in the `tests/e2e` directory. Test results and reports (usually an HTML report) will be available after the run.
