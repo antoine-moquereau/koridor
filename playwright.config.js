@@ -1,6 +1,6 @@
 // @ts-check
-import { defineConfig as defineE2EConfig, devices } from '@playwright/test';
-import { defineConfig as defineCTConfig } from '@playwright/experimental-ct-svelte';
+import { defineConfig as defineE2EConfig, devices } from '@playwright/test'
+import { defineConfig as defineCTConfig } from '@playwright/experimental-ct-svelte'
 
 /**
  * Read environment variables from file.
@@ -29,15 +29,15 @@ const e2eConfig = defineE2EConfig({
     baseURL: 'http://localhost:5173',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'on-first-retry'
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium-e2e',
-      use: { ...devices['Desktop Chrome'] },
-    },
+      use: { ...devices['Desktop Chrome'] }
+    }
 
     // {
     //   name: 'firefox-e2e',
@@ -55,9 +55,9 @@ const e2eConfig = defineE2EConfig({
     command: 'npm run dev',
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000, // Increase timeout for server start
-  },
-});
+    timeout: 120 * 1000 // Increase timeout for server start
+  }
+})
 
 const ctConfig = defineCTConfig({
   testDir: './src', // Adjusted for component testing, assuming tests are co-located or within src
@@ -88,8 +88,8 @@ const ctConfig = defineCTConfig({
   projects: [
     {
       name: 'chromium-ct',
-      use: { ...devices['Desktop Chrome'] },
-    },
+      use: { ...devices['Desktop Chrome'] }
+    }
     // {
     //   name: 'firefox-ct',
     //   use: { ...devices['Desktop Firefox'] },
@@ -98,8 +98,8 @@ const ctConfig = defineCTConfig({
     //   name: 'webkit-ct',
     //   use: { ...devices['Desktop Safari'] },
     // }
-  ],
-});
+  ]
+})
 
 // Combine configs - typically you might run E2E and CT separately
 // For this example, we'll merge them, but this might need adjustment based on how tests are run.
@@ -137,12 +137,13 @@ export default {
       name: 'svelte-component-tests',
       testDir: ctConfig.testDir, // Source directory for CT
       testMatch: ctConfig.testMatch, // Pattern for CT files
-      use: { // Specific settings for CT project
+      use: {
+        // Specific settings for CT project
         ...ctConfig.use,
         ctViteConfig: {
           // Ensure svelte specific vite plugins are loaded if not handled by ctSvelteVersion
         }
-      },
+      }
       // If your Svelte components need specific setup for testing, like a test harness or global mocks,
       // you can configure it here or in a test setup file.
     }
@@ -154,5 +155,5 @@ export default {
   retries: e2eConfig.retries,
   workers: e2eConfig.workers,
   reporter: e2eConfig.reporter,
-  use: e2eConfig.use, // Global use, ct project will override as needed
-};
+  use: e2eConfig.use // Global use, ct project will override as needed
+}

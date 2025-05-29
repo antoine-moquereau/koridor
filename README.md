@@ -30,6 +30,7 @@ This project uses [Playwright](https://playwright.dev/) for End-to-End (E2E) tes
 **Setup:**
 
 1.  **Install Dependencies:** If you haven't already, install the project dependencies:
+
     ```bash
     npm install
     ```
