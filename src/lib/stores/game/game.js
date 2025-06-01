@@ -113,17 +113,17 @@ function createGame() {
         return {
           ...game,
           fences: {
-          positions: {
-            horizontal: [...game.fences.positions.horizontal, position],
-            vertical: game.fences.positions.vertical
+            positions: {
+              horizontal: [...game.fences.positions.horizontal, position],
+              vertical: game.fences.positions.vertical
+            },
+            available: decrementActivePlayerAvailableFences(game)
           },
-          available: decrementActivePlayerAvailableFences(game)
-        },
-        activePlayer: nextActivePlayer(game),
-        graph: placeHorizontalFence(game.graph, position),
-        history: newHistory
-      }
-    })
+          activePlayer: nextActivePlayer(game),
+          graph: placeHorizontalFence(game.graph, position),
+          history: newHistory
+        }
+      })
     },
     /**
      * @param {number} position
@@ -137,17 +137,17 @@ function createGame() {
         return {
           ...game,
           fences: {
-          positions: {
-            horizontal: game.fences.positions.horizontal,
-            vertical: [...game.fences.positions.vertical, position]
+            positions: {
+              horizontal: game.fences.positions.horizontal,
+              vertical: [...game.fences.positions.vertical, position]
+            },
+            available: decrementActivePlayerAvailableFences(game)
           },
-          available: decrementActivePlayerAvailableFences(game)
-        },
-        activePlayer: nextActivePlayer(game),
-        graph: placeVerticalFence(game.graph, position),
-        history: newHistory
-      }
-    })
+          activePlayer: nextActivePlayer(game),
+          graph: placeVerticalFence(game.graph, position),
+          history: newHistory
+        }
+      })
     },
     /**
      * @param {Players} players

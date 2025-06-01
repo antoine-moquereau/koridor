@@ -4,7 +4,7 @@ import { game } from './game.js' // Assuming game is exported and provides set, 
 import { MAX_HISTORY_LENGTH } from '$lib/constants.js'
 
 // Helper to get a clean game state for assertions (without complex Svelte store parts)
-const getCleanState = (gameState) => {
+const getCleanState = gameState => {
   const { playerPositions, fences, activePlayer } = gameState
   return { playerPositions, fences, activePlayer }
 }
@@ -25,7 +25,9 @@ describe('Game Store - History and Go Back Functionality', () => {
       game.move(10) // Example move
       expect(get(game).history.length).toBe(1)
       // Check if the history state is a snapshot of the state *before* the move
-      expect(get(game).history[0].playerPositions[0]).toBe(get(game).playerPositions[0] !== 10 ? get(game).history[0].playerPositions[0] : 4) // player 0 initial position for 2 players
+      expect(get(game).history[0].playerPositions[0]).toBe(
+        get(game).playerPositions[0] !== 10 ? get(game).history[0].playerPositions[0] : 4
+      ) // player 0 initial position for 2 players
     })
 
     it('should add a state to history after placing a horizontal fence', () => {
@@ -103,7 +105,6 @@ describe('Game Store - History and Go Back Functionality', () => {
       expect(get(game).history.length).toBe(1)
       expect(getCleanState(get(game).history[0])).toEqual(state0)
 
-
       game.goBack() // Back to state0
       expect(getCleanState(get(game))).toEqual(state0)
       expect(get(game).history.length).toBe(0)
@@ -126,7 +127,6 @@ describe('Game Store - History and Go Back Functionality', () => {
       // State C, history: [A', B']
       expect(get(game).history.length).toBe(2)
       expect(getCleanState(get(game).history[1])).toEqual(stateB_board)
-
 
       game.goBack() // Go back to State B. Current history should be [A']
       expect(getCleanState(get(game))).toEqual(stateB_board) // Board is B's board
