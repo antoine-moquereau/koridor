@@ -67,7 +67,8 @@ const defaultGame = players => ({
           Array.from({ length: SIZE }, (_, i) => i),
           Array.from({ length: SIZE }, (_, i) => i * SIZE + SIZE - 1)
         ],
-  history: []
+  history: [],
+  future: []
 })
 
 function createGame() {
@@ -90,17 +91,19 @@ function createGame() {
      */
     move: position => {
       update(game => {
-        const gameSnapshot = { ...game }
-        delete gameSnapshot.history // Exclude history from the snapshot
+        const { history, ...restOfGame } = game; // Destructure to get game state without its own history property
+        // The snapshot taken is restOfGame, which doesn't include the 'history' array of the state it's capturing.
+        // It includes 'future' as it was at that point.
+        const clonedSnapshot = JSON.parse(JSON.stringify(restOfGame));
 
-        const newHistory = [...game.history, JSON.parse(JSON.stringify(gameSnapshot))]
+        const newHistory = [...game.history, clonedSnapshot]; // Add the snapshot to the live history array
         if (newHistory.length > MAX_HISTORY_SIZE) {
           newHistory.shift()
         }
         return {
-          ...game,
-          future: [], // Clear future on new move
-          history: newHistory,
+          ...game, // Spread the original game state to retain its current 'future' etc.
+          future: [], // Clear future on new move, as per existing logic
+          history: newHistory, // Set the updated history
           playerPositions: game.playerPositions.map((el, i) =>
             i === game.activePlayer ? position : el
           ),
@@ -113,10 +116,10 @@ function createGame() {
      */
     placeHorizontalFence: position => {
       update(game => {
-        const gameSnapshot = { ...game }
-        delete gameSnapshot.history // Exclude history from the snapshot
+        const { history, ...restOfGame } = game; // Destructure to get game state without its own history property
+        const clonedSnapshot = JSON.parse(JSON.stringify(restOfGame)); // This snapshot is what's stored
 
-        const newHistory = [...game.history, JSON.parse(JSON.stringify(gameSnapshot))]
+        const newHistory = [...game.history, clonedSnapshot]; // Add to the live history array
         if (newHistory.length > MAX_HISTORY_SIZE) {
           newHistory.shift()
         }
@@ -141,10 +144,10 @@ function createGame() {
      */
     placeVerticalFence: position => {
       update(game => {
-        const gameSnapshot = { ...game }
-        delete gameSnapshot.history // Exclude history from the snapshot
+        const { history, ...restOfGame } = game; // Destructure to get game state without history
+        const clonedSnapshot = JSON.parse(JSON.stringify(restOfGame)); // Deep clone the essential game state
 
-        const newHistory = [...game.history, JSON.parse(JSON.stringify(gameSnapshot))]
+        const newHistory = [...game.history, clonedSnapshot];
         if (newHistory.length > MAX_HISTORY_SIZE) {
           newHistory.shift()
         }
@@ -174,11 +177,11 @@ function createGame() {
           return game // Nothing to undo
         }
 
-        const gameSnapshot = { ...game }
-        delete gameSnapshot.history
-        delete gameSnapshot.future
+        // Create snapshot of current state WITHOUT its own history/future to store in the 'future' array
+        const { history, future, ...restOfGame } = game;
+        const clonedSnapshot = JSON.parse(JSON.stringify(restOfGame));
 
-        const newFuture = [...game.future, JSON.parse(JSON.stringify(gameSnapshot))]
+        const newFuture = [...game.future, clonedSnapshot];
         if (newFuture.length > MAX_HISTORY_SIZE) {
           newFuture.shift() // Remove oldest if future exceeds max size
         }
@@ -186,7 +189,7 @@ function createGame() {
         const previousState = game.history.pop() // Get the last state from history
 
         return {
-          ...previousState, // Restore the previous state
+          ...(/** @type {Game} */ (previousState)), // Restore the previous state
           history: [...game.history], // Update history (already popped)
           future: newFuture // Update future
         }
@@ -198,11 +201,11 @@ function createGame() {
           return game // Nothing to redo
         }
 
-        const gameSnapshot = { ...game }
-        delete gameSnapshot.history
-        delete gameSnapshot.future
+        // Create snapshot of current state WITHOUT its own history/future to store in the 'history' array
+        const { history, future, ...restOfGame } = game;
+        const clonedSnapshot = JSON.parse(JSON.stringify(restOfGame));
 
-        const newHistory = [...game.history, JSON.parse(JSON.stringify(gameSnapshot))]
+        const newHistory = [...game.history, clonedSnapshot];
         if (newHistory.length > MAX_HISTORY_SIZE) {
           newHistory.shift() // Remove oldest if history exceeds max size
         }
@@ -210,7 +213,7 @@ function createGame() {
         const nextState = game.future.pop() // Get the last state from future
 
         return {
-          ...nextState, // Restore the next state
+          ...(/** @type {Game} */ (nextState)), // Restore the next state
           history: newHistory, // Update history
           future: [...game.future] // Update future (already popped)
         }

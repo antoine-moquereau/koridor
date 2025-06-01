@@ -8,13 +8,14 @@
    * @type {string | undefined}
    */
   export let href = undefined
+  export let disabled = false;
 
   const type = !href ? 'button' : undefined
   const element = type || 'a'
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<svelte:element this={element} class={className} {href} {type} on:click on:keyup>
+<svelte:element this={element} class={className} {href} {type} {disabled} on:click on:keyup>
   <slot />
 </svelte:element>
 
@@ -47,5 +48,20 @@
   }
   a::after {
     content: none;
+  }
+  button:disabled, /* Standard for actual buttons */
+  a[disabled] /* For <a> tags if used, though aria-disabled is better */ {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  button:disabled:hover,
+  a[disabled]:hover {
+    /* Override hover styles for disabled state */
+    background: var(--normal-color);
+    border: 2px solid var(--transparentcc-font-color);
+    box-shadow: none;
+    font-weight: 500; /* Assuming default font-weight */
+    transform: scale(1);
   }
 </style>
