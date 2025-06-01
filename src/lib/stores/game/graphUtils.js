@@ -50,12 +50,12 @@ function breadthFirstSearch(graph, startPosition) {
  */
 function createGraph(size) {
   return Array.from({ length: size * size }, (_, i) => {
-    const edges = [];
+    const edges = []
     // Check for edge cases (board boundaries) before adding neighbors.
-    if (i >= size) edges.push(i - size); // Cell above (if not in the first row)
-    if ((i + 1) % size !== 0) edges.push(i + 1); // Cell to the right (if not in the last column)
-    if (i < size * size - size) edges.push(i + size); // Cell below (if not in the last row)
-    if (i % size !== 0) edges.push(i - 1); // Cell to the left (if not in the first column)
+    if (i >= size) edges.push(i - size) // Cell above (if not in the first row)
+    if ((i + 1) % size !== 0) edges.push(i + 1) // Cell to the right (if not in the last column)
+    if (i < size * size - size) edges.push(i + size) // Cell below (if not in the last row)
+    if (i % size !== 0) edges.push(i - 1) // Cell to the left (if not in the first column)
     return edges
   })
 }
@@ -163,19 +163,19 @@ function getActivePlayerPointOfViewGraph(graph, playerPositions, activePlayer) {
  *                       The original graph is not modified.
  */
 function placeHorizontalFence(graph, position) {
-  const size = Math.sqrt(graph.length); // Determine board size from graph length
+  const size = Math.sqrt(graph.length) // Determine board size from graph length
   return graph.map((edges, cellIndex) => {
     // A horizontal fence placed at `position` affects connections for 4 cells:
     // 1. `position`: loses connection to `position + size` (cell below it).
     // 2. `position + 1`: loses connection to `position + 1 + size` (cell below it).
     // 3. `position + size`: loses connection to `position` (cell above it).
     // 4. `position + size + 1`: loses connection to `position + 1` (cell above it).
-    if (cellIndex === position) return edges.filter(edge => edge !== position + size);
-    if (cellIndex === position + 1) return edges.filter(edge => edge !== position + 1 + size);
-    if (cellIndex === position + size) return edges.filter(edge => edge !== position);
-    if (cellIndex === position + size + 1) return edges.filter(edge => edge !== position + 1);
-    return edges;
-  });
+    if (cellIndex === position) return edges.filter(edge => edge !== position + size)
+    if (cellIndex === position + 1) return edges.filter(edge => edge !== position + 1 + size)
+    if (cellIndex === position + size) return edges.filter(edge => edge !== position)
+    if (cellIndex === position + size + 1) return edges.filter(edge => edge !== position + 1)
+    return edges
+  })
 }
 
 /**
@@ -192,19 +192,19 @@ function placeHorizontalFence(graph, position) {
  *                       The original graph is not modified.
  */
 function placeVerticalFence(graph, position) {
-  const size = Math.sqrt(graph.length); // Determine board size
+  const size = Math.sqrt(graph.length) // Determine board size
   return graph.map((edges, cellIndex) => {
     // A vertical fence placed at `position` affects connections for 4 cells:
     // 1. `position`: loses connection to `position + 1` (cell to its right).
     // 2. `position + 1`: loses connection to `position` (cell to its left).
     // 3. `position + size`: loses connection to `position + size + 1` (cell to its right).
     // 4. `position + size + 1`: loses connection to `position + size` (cell to its left).
-    if (cellIndex === position) return edges.filter(edge => edge !== position + 1);
-    if (cellIndex === position + 1) return edges.filter(edge => edge !== position);
-    if (cellIndex === position + size) return edges.filter(edge => edge !== position + size + 1);
-    if (cellIndex === position + size + 1) return edges.filter(edge => edge !== position + size);
-    return edges;
-  });
+    if (cellIndex === position) return edges.filter(edge => edge !== position + 1)
+    if (cellIndex === position + 1) return edges.filter(edge => edge !== position)
+    if (cellIndex === position + size) return edges.filter(edge => edge !== position + size + 1)
+    if (cellIndex === position + size + 1) return edges.filter(edge => edge !== position + size)
+    return edges
+  })
 }
 
 /**
@@ -225,34 +225,41 @@ function placeVerticalFence(graph, position) {
  *                     is found to any of the `endPositions`.
  */
 function shortestPath(graph, startPosition, endPositions) {
-  let stopSearch = false; // Flag to stop BFS once an end position is found
+  let stopSearch = false // Flag to stop BFS once an end position is found
   /**
    * Stores parent pointers to reconstruct the path.
    * Each element is an object: { key: childNodeIndex, from: parentNodeIndex }
    * @type {{ key: number; from: number; }[]}
    */
-  const parentLinks = [];
+  const parentLinks = []
   /**
    * Queue for BFS traversal. Stores nodes to visit.
    * @type {number[]}
    */
-  const visitQueue = [];
-  const exploredNodes = [startPosition]; // Nodes that have been visited or added to the queue
+  const visitQueue = []
+  const exploredNodes = [startPosition] // Nodes that have been visited or added to the queue
 
-  visitQueue.push(startPosition); // Start BFS from the startPosition
+  visitQueue.push(startPosition) // Start BFS from the startPosition
 
-  let currentNode = startPosition;
+  let currentNode // Will hold the current node being processed
   while (visitQueue.length > 0 && !stopSearch) {
-    currentNode = visitQueue.shift(); // Get the next node from the queue
+    currentNode = visitQueue.shift() // Get the next node from the queue
 
-    if (graph[currentNode]) { // Check if currentNode exists in the graph
+    if (currentNode === undefined) {
+      // Type guard for TypeScript
+      break // Should ideally not happen if visitQueue.length > 0
+    }
+
+    if (graph[currentNode]) {
+      // Check if currentNode exists in the graph and has neighbors
       for (const neighbor of graph[currentNode]) {
         if (!exploredNodes.includes(neighbor) && !stopSearch) {
-          exploredNodes.push(neighbor);
-          visitQueue.push(neighbor);
-          parentLinks.push({ key: neighbor, from: currentNode });
+          exploredNodes.push(neighbor)
+          visitQueue.push(neighbor)
+          // Ensure `from` is not undefined; currentNode type is narrowed by the check above.
+          parentLinks.push({ key: neighbor, from: currentNode })
           if (endPositions.includes(neighbor)) {
-            stopSearch = true; // Found one of the end positions
+            stopSearch = true // Found one of the end positions
             // No break here, BFS level needs to complete for shortest path property if multiple endPositions at same level
           }
         }
@@ -260,29 +267,31 @@ function shortestPath(graph, startPosition, endPositions) {
     }
   }
 
-  const resultPath = [];
+  const resultPath = []
   // Find the specific end position that was reached.
   // If multiple were reached at the same BFS depth, this picks one based on `exploredNodes` order.
-  let targetNode = exploredNodes.find(node => endPositions.includes(node) && parentLinks.some(link => link.key === node));
+  let targetNode = exploredNodes.find(
+    node => endPositions.includes(node) && parentLinks.some(link => link.key === node)
+  )
 
   // If no endPosition was actually linked via parentLinks (e.g. startPosition is an endPosition)
   if (!targetNode && endPositions.includes(startPosition)) {
-      return []; // Path to itself is empty as per spec (path doesn't include start)
+    return [] // Path to itself is empty as per spec (path doesn't include start)
   }
 
   if (!targetNode) {
-    return []; // No path found to any of the end positions
+    return [] // No path found to any of the end positions
   }
 
   // Reconstruct the path backwards from the targetNode using parentLinks
-  let pathTracer = targetNode;
+  let pathTracer = targetNode
   while (pathTracer !== startPosition) {
-    resultPath.push(pathTracer);
-    const link = parentLinks.find(entry => entry.key === pathTracer);
-    if (!link) break; // Should not happen if targetNode was properly found
-    pathTracer = link.from;
+    resultPath.push(pathTracer)
+    const link = parentLinks.find(entry => entry.key === pathTracer)
+    if (!link) break // Should not happen if targetNode was properly found
+    pathTracer = link.from
   }
-  return resultPath.reverse(); // Reverse to get path from start to end (excluding start)
+  return resultPath.reverse() // Reverse to get path from start to end (excluding start)
 }
 
 export {

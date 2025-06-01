@@ -72,7 +72,7 @@ describe('shortestPath', () => {
 
   it('should return an empty array if no path exists to any end position', () => {
     // Create a disconnected graph scenario for node 5
-    const disconnectedGraph = [...graph, []]; // Add node 5 with no edges
+    const disconnectedGraph = [...graph, []] // Add node 5 with no edges
     expect(shortestPath(disconnectedGraph, 0, [5])).toEqual([])
   })
 
@@ -88,17 +88,17 @@ describe('shortestPath', () => {
   it('should work with a linear graph', () => {
     // 0 - 1 - 2 - 3
     const linearGraph = [
-      [1],    // 0
+      [1], // 0
       [0, 2], // 1
       [1, 3], // 2
-      [2]     // 3
-    ];
-    expect(shortestPath(linearGraph, 0, [3])).toEqual([1, 2, 3]);
-  });
+      [2] // 3
+    ]
+    expect(shortestPath(linearGraph, 0, [3])).toEqual([1, 2, 3])
+  })
 
   it('should return empty array for out-of-bounds startPosition if graph is not well-defined there', () => {
     // This test depends on how graph[startPosition] behaves.
     // If graph[7] is undefined or has no valid neighbors, it should result in no path.
-    expect(shortestPath(graph, 7, [0])).toEqual([]);
-  });
+    expect(shortestPath(graph, 7, [0])).toEqual([])
+  })
 })

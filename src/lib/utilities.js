@@ -27,10 +27,15 @@ function clickOutside(node) {
    * If the click target is outside the specified `node`, it dispatches an 'outsideClick' custom event from the `node`.
    * @param {MouseEvent} event - The mouse event.
    */
-  const handleClick = (event) => {
+  const handleClick = event => {
     // Check if the event target is an HTMLElement and if the node does not contain the event target.
     // Also checks if the node itself is still connected to the DOM.
-    if (node && node.parentNode && event.target instanceof HTMLElement && !node.contains(event.target)) {
+    if (
+      node &&
+      node.parentNode &&
+      event.target instanceof HTMLElement &&
+      !node.contains(event.target)
+    ) {
       node.dispatchEvent(new CustomEvent('outsideClick')) // Dispatch a custom event
     }
   }
@@ -48,17 +53,18 @@ function clickOutside(node) {
 
 function crossfadeTransition() {
   const [send, receive] = crossfade({
-    duration: (d) => Math.sqrt(d * 300), // Duration based on distance
-    fallback: () => ({ // Fallback transition for elements without a counterpart
+    duration: d => Math.sqrt(d * 300), // Duration based on distance
+    fallback: () => ({
+      // Fallback transition for elements without a counterpart
       duration: 700,
       easing: quintOut,
-      css: (t) => `
+      css: t => `
         transform: scale(${t});
         opacity: ${t};
       `
     })
-  });
-  return [send, receive];
+  })
+  return [send, receive]
 }
 
 /**

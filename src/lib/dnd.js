@@ -14,7 +14,7 @@
  * Defines the visual representation of the item being dragged.
  * This is typically a Svelte component instance that appears near the touch point.
  * @typedef {Object} DragImage
- * @property {import('svelte').ComponentType} component - The Svelte component to render as the drag image.
+ * @property {typeof import('svelte').SvelteComponent<any, any, any>} component - The Svelte component to render as the drag image.
  * @property {number} width - The width of the drag image in pixels.
  * @property {number} height - The height of the drag image in pixels.
  */
@@ -41,20 +41,21 @@
 // especially on touch devices. The `touch-action: none` CSS property is related
 // as it tells the browser that touch events on an element will not cause scrolling,
 // allowing the browser to not delay the touchstart event to see if a scroll gesture is starting.
-let shouldBePassive = false;
+let shouldBePassive = false
 try {
   const opts = Object.defineProperty({}, 'passive', {
     get: function () {
       // If the browser attempts to read the 'passive' property, it supports passive listeners.
       // We also check if `CSS.supports('touch-action', 'none')` is true,
       // indicating good support for related touch optimizations.
-      shouldBePassive = CSS.supports('touch-action', 'none');
-      return true; // Indicate that the passive property was successfully accessed.
+      shouldBePassive = CSS.supports('touch-action', 'none')
+      return true // Indicate that the passive property was successfully accessed.
     }
-  });
+  })
   // Create a dummy event listener with these options to trigger the getter.
-  window.addEventListener('testPassive', null, opts);
-  window.removeEventListener('testPassive', null, opts);
+  const noop = () => {} // No-operation function
+  window.addEventListener('testPassive', noop, opts)
+  window.removeEventListener('testPassive', noop, opts)
 } catch (e) {
   // If an error occurs (e.g., in very old browsers), `shouldBePassive` remains false.
 }
@@ -86,18 +87,18 @@ try {
  */
 function drag(node, options) {
   /** @type {string} */
-  let type; // Type of the draggable item, e.g., 'card', 'player'.
+  let type // Type of the draggable item, e.g., 'card', 'player'.
   /** @type {DragImage | undefined} */
-  let image; // Configuration for the visual representation of the item being dragged.
+  let image // Configuration for the visual representation of the item being dragged.
 
   /** @type {HTMLDivElement | undefined} */
-  let imageElement; // The DIV element that hosts the Svelte component for the drag image.
+  let imageElement // The DIV element that hosts the Svelte component for the drag image.
   /** @type {{ x: number; y: number; width: number; height: number; }} */
-  let offset; // Bounding client rect of the original draggable node, used for animations.
+  let offset // Bounding client rect of the original draggable node, used for animations.
   /** @type {Element | null} */
-  let lastDropTarget; // The last valid drop target element the drag was over.
+  let lastDropTarget // The last valid drop target element the drag was over.
   /** @type {NodeJS.Timeout} */
-  let returnAnimationTimeout; // Timeout ID for the drag image return animation.
+  let returnAnimationTimeout // Timeout ID for the drag image return animation.
 
   /**
    * Generates the CSS style string for the drag image element.
@@ -130,17 +131,17 @@ function drag(node, options) {
    * @param {DragActionOptions} newOptions - The new options for the drag action.
    */
   function update(newOptions = {}) {
-    type = newOptions.type || 'default';
+    type = newOptions.type || 'default'
     // Clean up existing image element if present
     if (imageElement) {
-      document.body.removeChild(imageElement);
-      imageElement = undefined; // Ensure it's reset
+      document.body.removeChild(imageElement)
+      imageElement = undefined // Ensure it's reset
     }
     if (newOptions.image) {
-      image = newOptions.image;
-      imageElement = document.createElement('div');
-      const nodeRect = node.getBoundingClientRect();
-      offset = { x: nodeRect.x, y: nodeRect.y, width: nodeRect.width, height: nodeRect.height };
+      image = newOptions.image
+      imageElement = document.createElement('div')
+      const nodeRect = node.getBoundingClientRect()
+      offset = { x: nodeRect.x, y: nodeRect.y, width: nodeRect.width, height: nodeRect.height }
       // Initial style for the image, positioned relative to the source node and hidden.
       imageElement.style.cssText = getImageStyle(
         offset.x + offset.width / 2,
@@ -148,13 +149,13 @@ function drag(node, options) {
         image.width,
         image.height,
         'hidden', // Initially hidden
-        '0'       // Initially transparent
-      );
+        '0' // Initially transparent
+      )
       // Instantiate the Svelte component for the drag image
-      new image.component({ target: imageElement });
-      document.body.appendChild(imageElement);
+      new image.component({ target: imageElement })
+      document.body.appendChild(imageElement)
     } else {
-      image = undefined; // Clear image if not provided in new options
+      image = undefined // Clear image if not provided in new options
     }
   }
 
@@ -167,9 +168,9 @@ function drag(node, options) {
    */
   function elementFromPoint(x, y) {
     // Adjust point to be where the "tip" of the cursor would be relative to the drag image
-    const checkX = x - (image?.width || 0) / 2;
-    const checkY = y - 60 - (image?.height || 0); // 60 is an arbitrary offset used in getImageStyle
-    return document.elementFromPoint(checkX, checkY);
+    const checkX = x - (image?.width || 0) / 2
+    const checkY = y - 60 - (image?.height || 0) // 60 is an arbitrary offset used in getImageStyle
+    return document.elementFromPoint(checkX, checkY)
   }
 
   /**
@@ -178,17 +179,24 @@ function drag(node, options) {
    * @param {TouchEvent} event - The touch event.
    */
   function handleTouchstart(event) {
-    if (!shouldBePassive) event.preventDefault(); // Prevent default only if not using passive listeners.
-    node.dispatchEvent(new CustomEvent('dragstart')); // Dispatch custom dragstart event.
-    node.classList.add('dragging'); // Add class for styling the source node.
+    if (!shouldBePassive) event.preventDefault() // Prevent default only if not using passive listeners.
+    node.dispatchEvent(new CustomEvent('dragstart')) // Dispatch custom dragstart event.
+    node.classList.add('dragging') // Add class for styling the source node.
 
     if (image && imageElement) {
-      clearTimeout(returnAnimationTimeout); // Clear any pending return animation.
-      const touch = event.changedTouches[0];
+      clearTimeout(returnAnimationTimeout) // Clear any pending return animation.
+      const touch = event.changedTouches[0]
       // Immediately move and show the drag image at the touch point.
-      imageElement.style.cssText = getImageStyle(touch.clientX, touch.clientY, image.width, image.height, 'visible', '0.9');
+      imageElement.style.cssText = getImageStyle(
+        touch.clientX,
+        touch.clientY,
+        image.width,
+        image.height,
+        'visible',
+        '0.9'
+      )
       // Set transition for smooth movement and opacity changes if needed later.
-      imageElement.style.transition = 'opacity .7s, transform .7s';
+      imageElement.style.transition = 'opacity .7s, transform .7s'
     }
   }
 
@@ -198,7 +206,7 @@ function drag(node, options) {
    * @param {TouchEvent} event - The touch event.
    */
   function handleTouchmove(event) {
-    const touch = event.changedTouches[0];
+    const touch = event.changedTouches[0]
     if (image && imageElement) {
       // Update drag image position to follow the touch point.
       // Keep it 'hidden' during move then make visible to avoid flicker if elementFromPoint is slow.
@@ -208,31 +216,37 @@ function drag(node, options) {
         image.width,
         image.height,
         'hidden' // Temporarily hide while checking underlying element
-      );
+      )
     }
 
-    const currentElementUnderTouch = elementFromPoint(touch.clientX, touch.clientY);
-    if (imageElement) imageElement.style.visibility = 'visible'; // Make image visible again
+    const currentElementUnderTouch = elementFromPoint(touch.clientX, touch.clientY)
+    if (imageElement) imageElement.style.visibility = 'visible' // Make image visible again
 
-    if (currentElementUnderTouch instanceof HTMLElement && currentElementUnderTouch.dataset.dropType === type) {
+    if (
+      currentElementUnderTouch instanceof HTMLElement &&
+      currentElementUnderTouch.dataset.dropType === type
+    ) {
       // Over a valid drop target
-      currentElementUnderTouch.dispatchEvent(new CustomEvent('dragover', { detail: { type } }));
-      currentElementUnderTouch.classList.add('dragover');
-      if (imageElement) imageElement.style.opacity = '0.3'; // Dim image to show acceptance
+      currentElementUnderTouch.dispatchEvent(new CustomEvent('dragover', { detail: { type } }))
+      currentElementUnderTouch.classList.add('dragover')
+      if (imageElement) imageElement.style.opacity = '0.3' // Dim image to show acceptance
     } else if (imageElement) {
-      imageElement.style.opacity = '0.9'; // Full opacity if not over a valid target
+      imageElement.style.opacity = '0.9' // Full opacity if not over a valid target
     }
 
     // Manage dragenter/dragleave events for drop targets
     if (lastDropTarget !== currentElementUnderTouch) {
       if (lastDropTarget instanceof HTMLElement && lastDropTarget.dataset.dropType === type) {
-        lastDropTarget.dispatchEvent(new CustomEvent('dragleave', { detail: { type } }));
-        lastDropTarget.classList.remove('dragover');
+        lastDropTarget.dispatchEvent(new CustomEvent('dragleave', { detail: { type } }))
+        lastDropTarget.classList.remove('dragover')
       }
-      if (currentElementUnderTouch instanceof HTMLElement && currentElementUnderTouch.dataset.dropType === type) {
-        currentElementUnderTouch.dispatchEvent(new CustomEvent('dragenter', { detail: { type } }));
+      if (
+        currentElementUnderTouch instanceof HTMLElement &&
+        currentElementUnderTouch.dataset.dropType === type
+      ) {
+        currentElementUnderTouch.dispatchEvent(new CustomEvent('dragenter', { detail: { type } }))
       }
-      lastDropTarget = currentElementUnderTouch;
+      lastDropTarget = currentElementUnderTouch
     }
   }
 
@@ -242,12 +256,15 @@ function drag(node, options) {
    * @param {TouchEvent} event - The touch event.
    */
   function handleTouchend(event) {
-    if (imageElement) imageElement.style.visibility = 'hidden'; // Hide image during final processing.
+    if (imageElement) imageElement.style.visibility = 'hidden' // Hide image during final processing.
 
-    const touch = event.changedTouches[0];
-    const finalElementUnderTouch = elementFromPoint(touch.clientX, touch.clientY);
+    const touch = event.changedTouches[0]
+    const finalElementUnderTouch = elementFromPoint(touch.clientX, touch.clientY)
 
-    if (finalElementUnderTouch instanceof HTMLElement && finalElementUnderTouch.dataset.dropType === type) {
+    if (
+      finalElementUnderTouch instanceof HTMLElement &&
+      finalElementUnderTouch.dataset.dropType === type
+    ) {
       // Successful drop on a valid target
       if (image && imageElement) {
         // Animate image to its original spot then hide (or could be to the drop spot)
@@ -258,50 +275,56 @@ function drag(node, options) {
           image.height,
           'hidden', // Will be hidden after transition
           '0'
-        );
+        )
       }
-      finalElementUnderTouch.dispatchEvent(new CustomEvent('drop', { detail: { type } }));
-      finalElementUnderTouch.dispatchEvent(new CustomEvent('dragleave', { detail: { type } })); // Clean up target
-      finalElementUnderTouch.classList.remove('dragover');
-      lastDropTarget = null;
+      finalElementUnderTouch.dispatchEvent(new CustomEvent('drop', { detail: { type } }))
+      finalElementUnderTouch.dispatchEvent(new CustomEvent('dragleave', { detail: { type } })) // Clean up target
+      finalElementUnderTouch.classList.remove('dragover')
+      lastDropTarget = null
     } else if (image && imageElement) {
       // No valid drop target, animate image returning to its original position then hide.
-      imageElement.style.visibility = 'visible';
-      imageElement.style.transition = 'opacity .7s, transform .7s'; // Ensure transition is set
-      imageElement.style.opacity = '0'; // Fade out
+      imageElement.style.visibility = 'visible'
+      imageElement.style.transition = 'opacity .7s, transform .7s' // Ensure transition is set
+      imageElement.style.opacity = '0' // Fade out
       imageElement.style.transform = `translate(${
         offset.x + offset.width / 2 - image.width / 2
-      }px, ${offset.y + offset.height / 2 - image.height / 2}px)`; // Move to origin
+      }px, ${offset.y + offset.height / 2 - image.height / 2}px)` // Move to origin
       // Set timeout to hide element after transition.
       returnAnimationTimeout = setTimeout(() => {
-        if (imageElement) imageElement.style.visibility = 'hidden';
-      }, 700); // Duration should match transition time.
+        if (imageElement) imageElement.style.visibility = 'hidden'
+      }, 700) // Duration should match transition time.
     }
-    node.dispatchEvent(new CustomEvent('dragend'));
-    node.classList.remove('dragging');
+    node.dispatchEvent(new CustomEvent('dragend'))
+    node.classList.remove('dragging')
   }
 
-  update(options); // Initialize with provided options.
-  node.style.touchAction = 'none'; // Recommended for draggable elements to prevent scrolling.
+  update(options) // Initialize with provided options.
+  node.style.touchAction = 'none' // Recommended for draggable elements to prevent scrolling.
 
   // Add event listeners. Use passive if detected and appropriate.
-  node.addEventListener('touchstart', handleTouchstart, shouldBePassive ? { passive: true } : false);
-  node.addEventListener('touchmove', handleTouchmove, shouldBePassive ? { passive: true } : false);
-  node.addEventListener('touchend', handleTouchend, false); // touchend is not typically passive.
+  const touchstartOptions = shouldBePassive ? { passive: true } : false
+  const touchmoveOptions = shouldBePassive ? { passive: true } : false
+
+  node.addEventListener('touchstart', handleTouchstart, touchstartOptions)
+  node.addEventListener('touchmove', handleTouchmove, touchmoveOptions)
+  node.addEventListener('touchend', handleTouchend, false) // touchend is not typically passive.
 
   return {
     update,
     destroy() {
-      clearTimeout(returnAnimationTimeout);
+      clearTimeout(returnAnimationTimeout)
       if (imageElement && imageElement.parentNode === document.body) {
-        document.body.removeChild(imageElement);
+        document.body.removeChild(imageElement)
       }
-      // Remove event listeners. Ensure capture/passive flags match those used in addEventListener.
-      node.removeEventListener('touchstart', handleTouchstart, shouldBePassive ? { passive: true } : false);
-      node.removeEventListener('touchmove', handleTouchmove, shouldBePassive ? { passive: true } : false);
-      node.removeEventListener('touchend', handleTouchend, false);
+      // For removeEventListener, the third argument is useCapture (boolean).
+      // Since passive doesn't affect which listener is matched for removal,
+      // and the capture phase for all added listeners here is effectively false (default),
+      // we can use 'false' for removal.
+      node.removeEventListener('touchstart', handleTouchstart, false)
+      node.removeEventListener('touchmove', handleTouchmove, false)
+      node.removeEventListener('touchend', handleTouchend, false)
     }
-  };
+  }
 }
 
 /**
@@ -324,10 +347,10 @@ function drop(node, options) {
    * @param {DropActionOptions} [newOptions={}] - The new options.
    */
   function update(newOptions = {}) {
-    node.dataset.dropType = newOptions.type || 'default';
+    node.dataset.dropType = newOptions.type || 'default'
   }
-  update(options); // Initialize with provided options.
-  return { update };
+  update(options) // Initialize with provided options.
+  return { update }
 }
 
-export { drag, drop };
+export { drag, drop }

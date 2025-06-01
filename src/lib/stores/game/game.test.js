@@ -5,18 +5,20 @@ import { FENCES, SIZE } from '$lib/constants'
 import { get } from 'svelte/store'
 
 // Mock console.warn to prevent it from cluttering test output for the conditional skip
-vi.spyOn(console, 'warn').mockImplementation(() => {});
+vi.spyOn(console, 'warn').mockImplementation(() => {})
 
 const isDefaultGameExported = typeof defaultGame === 'function'
 
 describe('defaultGame Function Unit Tests', () => {
   if (!isDefaultGameExported) {
     // This message will be displayed if defaultGame is not exported, and these tests will be skipped.
-    console.warn("WARN: defaultGame is not exported from './game.js'. Skipping direct unit tests for defaultGame.");
+    console.warn(
+      "WARN: defaultGame is not exported from './game.js'. Skipping direct unit tests for defaultGame."
+    )
   }
 
   // Conditionally run tests for defaultGame only if it's exported
-  (isDefaultGameExported ? describe : describe.skip)('Directly testing defaultGame export', () => {
+  ;(isDefaultGameExported ? describe : describe.skip)('Directly testing defaultGame export', () => {
     it('should initialize correctly for 2 players', () => {
       const game = defaultGame(2)
 
@@ -58,8 +60,8 @@ describe('defaultGame Function Unit Tests', () => {
 
       // Winning positions based on the player order [P0, P1, P2, P3]
       const p0Winning = Array.from({ length: SIZE }, (_, i) => SIZE * SIZE - 1 - i) // Top row for P0
-      const p1Winning = Array.from({ length: SIZE }, (_, i) => i * SIZE)           // Left col for P1
-      const p2Winning = Array.from({ length: SIZE }, (_, i) => i)                   // Bottom row for P2
+      const p1Winning = Array.from({ length: SIZE }, (_, i) => i * SIZE) // Left col for P1
+      const p2Winning = Array.from({ length: SIZE }, (_, i) => i) // Bottom row for P2
       const p3Winning = Array.from({ length: SIZE }, (_, i) => i * SIZE + SIZE - 1) // Right col for P3
 
       expect(game.playerWinningPositions[0].sort()).toEqual(p0Winning.sort())
@@ -96,8 +98,10 @@ describe('Game Store Integration Tests (tests defaultGame via store)', () => {
   it('should allow resetting the store for 2 players using game.set()', () => {
     if (typeof gameStore.set !== 'function') {
       // This case should ideally not happen if gameStore is a standard Svelte store from createGame
-      console.warn("WARN: gameStore.set(players) is not available. Cannot test 2-player scenario via store reset.");
-      return;
+      console.warn(
+        'WARN: gameStore.set(players) is not available. Cannot test 2-player scenario via store reset.'
+      )
+      return
     }
 
     gameStore.set(2) // Attempt to reset the game for 2 players

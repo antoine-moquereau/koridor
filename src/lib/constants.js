@@ -11,7 +11,7 @@
  * each player gets 10 fences. In a 4-player game, each gets 5.
  * @type {number}
  */
-const FENCES = 20;
+const FENCES = 20
 
 /**
  * The size of one dimension of the square Quoridor game board.
@@ -19,6 +19,6 @@ const FENCES = 20;
  * The total number of cells on the board is `SIZE * SIZE`.
  * @type {number}
  */
-const SIZE = 9;
+const SIZE = 9
 
-export { FENCES, SIZE };
+export { FENCES, SIZE }

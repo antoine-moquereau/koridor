@@ -51,6 +51,19 @@ import {
  *                                                that the corresponding player must reach to win the game.
  */
 
+/** @typedef {import('svelte/store').Writable<GameState>} GameStoreWritable */
+
+/**
+ * Interface for the custom game store, extending Svelte's Writable store
+ * to include game-specific action methods.
+ * @typedef {GameStoreWritable & {
+ *   move: (position: number) => void;
+ *   placeHorizontalFence: (position: number) => void;
+ *   placeVerticalFence: (position: number) => void;
+ *   set: (players: PlayersCount) => void;
+ * }} CustomGameStore
+ */
+
 /**
  * Creates and returns a default game state object.
  * This state initializes player positions, fence counts, the game graph, and winning conditions
@@ -58,7 +71,7 @@ import {
  * @param {PlayersCount} players - The number of players for the game (typically 2 or 4).
  * @returns {GameState} A new game state object initialized for the start of a game.
  */
-const defaultGame = (players) => ({
+const defaultGame = players => ({
   fences: {
     positions: {
       horizontal: [],
@@ -113,7 +126,7 @@ function createGame() {
    * @param {GameState} currentGame - The current game state.
    * @returns {number[]} A new array with the updated fence counts for each player.
    */
-  const decrementActivePlayerAvailableFences = (currentGame) =>
+  const decrementActivePlayerAvailableFences = currentGame =>
     currentGame.fences.available.map((fenceCount, playerIndex) =>
       playerIndex === currentGame.activePlayer ? fenceCount - 1 : fenceCount
     )
@@ -124,8 +137,10 @@ function createGame() {
    * @param {GameState} currentGame - The current game state.
    * @returns {number} The index of the next player to take a turn.
    */
-  const nextActivePlayer = (currentGame) =>
-    currentGame.activePlayer === currentGame.playerPositions.length - 1 ? 0 : currentGame.activePlayer + 1
+  const nextActivePlayer = currentGame =>
+    currentGame.activePlayer === currentGame.playerPositions.length - 1
+      ? 0
+      : currentGame.activePlayer + 1
 
   return {
     subscribe,
@@ -134,8 +149,8 @@ function createGame() {
      * After the move, it advances the turn to the next player.
      * @param {number} newPosition - The cell index to which the active player will move.
      */
-    move: (newPosition) => {
-      update((currentGame) => ({
+    move: newPosition => {
+      update(currentGame => ({
         ...currentGame,
         playerPositions: currentGame.playerPositions.map((currentPos, playerIndex) =>
           playerIndex === currentGame.activePlayer ? newPosition : currentPos
@@ -149,8 +164,8 @@ function createGame() {
      * updates the game graph to reflect the new barrier, and advances the turn.
      * @param {number} fencePosition - The cell index for the top-left part of the horizontal fence.
      */
-    placeHorizontalFence: (fencePosition) => {
-      update((currentGame) => ({
+    placeHorizontalFence: fencePosition => {
+      update(currentGame => ({
         ...currentGame,
         fences: {
           positions: {
@@ -168,8 +183,8 @@ function createGame() {
      * Similar to placing a horizontal fence, this updates fence counts, the graph, and player turn.
      * @param {number} fencePosition - The cell index for the top-left part of the vertical fence.
      */
-    placeVerticalFence: (fencePosition) => {
-      update((currentGame) => ({
+    placeVerticalFence: fencePosition => {
+      update(currentGame => ({
         ...currentGame,
         fences: {
           positions: {
@@ -186,15 +201,15 @@ function createGame() {
      * Resets the game to a new default state based on the specified number of players.
      * @param {PlayersCount} playersCount - The number of players for the new game (e.g., 2 or 4).
      */
-    set: (playersCount) => set(defaultGame(playersCount))
+    set: playersCount => set(defaultGame(playersCount))
   }
 }
 
 /**
  * The main Svelte store holding the {@link GameState} and providing methods for game interaction.
- * @type {ReturnType<typeof createGame>}
+ * @type {CustomGameStore}
  */
-const game = createGame()
+const game = /** @type {CustomGameStore} */ (createGame())
 
 /**
  * A Svelte derived store that computes the winner of the game.
@@ -204,8 +219,9 @@ const game = createGame()
  * @type {import('svelte/store').Readable<number|undefined>} - A readable store that emits the
  * winning player's number (1-indexed) if there is a winner, otherwise `undefined`.
  */
-const winner = derived(game, ($game) => {
+const winner = derived(game, $game => {
   let winnerPlayer = undefined // Use a more descriptive variable name for clarity
+  // JSDoc typing for parameters is not needed here as types should be inferred from $game.playerPositions
   $game.playerPositions.forEach((position, playerIndex) => {
     // Check if the player's current position is one of their winning positions
     if ($game.playerWinningPositions[playerIndex].includes(position)) {
@@ -241,7 +257,7 @@ const winner = derived(game, ($game) => {
  * the player's original shortest path (before the hypothetical fence), and the index of the player who would be blocked.
  */
 function getFencePlacementErrors($game) {
-  const players = $game.playerPositions.length; // Number of players in the game
+  const players = $game.playerPositions.length // Number of players in the game
 
   /**
    * Checks if a player is completely blocked from reaching their winning side,
@@ -258,7 +274,7 @@ function getFencePlacementErrors($game) {
    *                    their winning positions, and `false` otherwise.
    */
   const blockWinningCase = (exploredPath, playerIndexInOrderedLoop) => {
-    const absolutePlayerIndex = (playerIndexInOrderedLoop + $game.activePlayer) % players; // Determine the actual player index (0-3)
+    const absolutePlayerIndex = (playerIndexInOrderedLoop + $game.activePlayer) % players // Determine the actual player index (0-3)
     // prettier-ignore
     switch (absolutePlayerIndex) {
       case 0: // Player 1 (typically starts bottom, aims for top row)
@@ -298,7 +314,10 @@ function getFencePlacementErrors($game) {
     for (let fenceCellIndex = 0; fenceCellIndex < SIZE * SIZE; fenceCellIndex++) {
       // Simulate and check horizontal fence placement
       const graphAfterSimulatedHSFence = placeHorizontalFence($game.graph, fenceCellIndex)
-      const pathAfterSimulatedHSFence = breadthFirstSearch(graphAfterSimulatedHSFence, startPosition)
+      const pathAfterSimulatedHSFence = breadthFirstSearch(
+        graphAfterSimulatedHSFence,
+        startPosition
+      )
       if (blockWinningCase(pathAfterSimulatedHSFence, playerIndexInLoop)) {
         horizontalErrors.push({
           position: fenceCellIndex, // The problematic fence position
@@ -310,7 +329,10 @@ function getFencePlacementErrors($game) {
 
       // Simulate and check vertical fence placement
       const graphAfterSimulatedVSFence = placeVerticalFence($game.graph, fenceCellIndex)
-      const pathAfterSimulatedVSFence = breadthFirstSearch(graphAfterSimulatedVSFence, startPosition)
+      const pathAfterSimulatedVSFence = breadthFirstSearch(
+        graphAfterSimulatedVSFence,
+        startPosition
+      )
       if (blockWinningCase(pathAfterSimulatedVSFence, playerIndexInLoop)) {
         verticalErrors.push({
           position: fenceCellIndex,
@@ -344,7 +366,7 @@ function getFencePlacementErrors($game) {
  *   - `error`: An object with `horizontal` and `vertical` arrays of {@link ErrorObject}s.
  *   - `graph`: An adjacency list representing the board from the active player's view.
  */
-const activePlayerPointOfView = derived(game, ($game) => {
+const activePlayerPointOfView = derived(game, $game => {
   const error = getFencePlacementErrors($game)
   const graph = getActivePlayerPointOfViewGraph(
     $game.graph,
