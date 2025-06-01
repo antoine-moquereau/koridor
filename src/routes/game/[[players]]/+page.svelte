@@ -30,6 +30,10 @@
     <ActivePlayer />
     <Board />
     <TouchActions />
+    <div class="game-controls">
+      <Button on:click={() => game.undo()} disabled={$game.history.length === 0}>Undo</Button>
+      <Button on:click={() => game.redo()} disabled={$game.future.length === 0}>Redo</Button>
+    </div>
   </div>
 {:else}
   <div class="Congratulations" transition:fade|local>
@@ -74,6 +78,13 @@
     position: fixed;
     transition: filter 0.9s;
     width: 100vw;
+  }
+  .game-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem; /* Adds space between buttons */
   }
   .Congratulations {
     display: flex;
