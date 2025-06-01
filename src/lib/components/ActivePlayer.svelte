@@ -17,10 +17,12 @@
   div {
     align-items: center;
     display: flex;
-    font-size: 1.7vh;
+    /* font-size: clamp(1rem, 1.7vh, 1.5rem); Preferring slightly larger min based on 1.7vh @ typical ~1000px height */
+    font-size: clamp(14px, 1.7vh, 22px);
     justify-content: center;
     left: 0;
-    line-height: 1.7vh;
+    /* line-height: clamp(1rem, 1.7vh, 1.5rem); */
+    line-height: clamp(14px, 1.7vh, 22px);
     position: fixed;
     right: 0;
     top: 9vh;
@@ -28,9 +30,13 @@
   div::before {
     border-radius: 50%;
     content: '';
-    height: 1.9vh;
-    margin: 0 1.7vh 0 -3.6vh;
-    width: 1.9vh;
+    /* height: clamp(1.1rem, 1.9vh, 1.7rem); */
+    height: clamp(16px, 1.9vh, 25px);
+    /* margin: 0 clamp(1rem, 1.7vh, 1.5rem) 0 clamp(-2.5rem, -3.6vh, -1.5rem); */
+    margin-right: clamp(14px, 1.7vh, 22px);
+    margin-left: clamp(-30px, -3.6vh, -20px);
+    /* width: clamp(1.1rem, 1.9vh, 1.7rem); */
+    width: clamp(16px, 1.9vh, 25px);
   }
   .player1::before {
     background: rgb(40 40 190);
