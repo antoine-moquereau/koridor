@@ -8,7 +8,7 @@
    * @type {string | undefined}
    */
   export let href = undefined
-  export let disabled = false;
+  export let disabled = false
 
   const type = !href ? 'button' : undefined
   const element = type || 'a'
