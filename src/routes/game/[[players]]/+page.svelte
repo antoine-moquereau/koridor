@@ -57,16 +57,9 @@
 {/if}
 
 <style>
-  @keyframes game {
-    0% {
-      filter: blur(0);
-    }
-    100% {
-      filter: blur(0);
-    }
-  }
+  /* The 'game' keyframes animation seems redundant as it animates blur(0) to blur(0). Removing it. */
   .Game {
-    animation: 0.7s game;
+    /* animation: 0.7s game; */ /* Removed */
     border: 0;
     display: block;
     filter: blur(var(--blur-overlay, 0));
@@ -87,23 +80,25 @@
     align-items: center;
     background: var(--light-color);
     border: 1px solid var(--normal-color);
-    border-radius: 5vh;
-    box-shadow: 0 0 1vh var(--dark-color);
+    border-radius: clamp(20px, 5vh, 50px);
+    box-shadow: 0 0 clamp(5px, 1vh, 10px) var(--dark-color);
     display: flex;
     flex-direction: column;
-    height: 58vh;
+    height: 58vh; /* Keep vh for overall section height, or clamp if needed: clamp(300px, 58vh, 700px); */
     justify-content: space-evenly;
     margin: auto;
     padding: 0 15%;
     z-index: 2;
   }
   h1 {
-    font-size: 4vh;
-    margin-top: 2vh;
+    /* font-size: clamp(1.8rem, 4vh, 3rem); */
+    font-size: clamp(24px, 4vh, 48px);
+    margin-top: 2vh; /* Could also be clamped if needed */
   }
   p {
-    font-size: 2.5vh;
-    padding: 1.7vh;
+    /* font-size: clamp(1.2rem, 2.5vh, 2rem); */
+    font-size: clamp(18px, 2.5vh, 32px);
+    padding: 1.7vh; /* Could also be clamped */
   }
   p.player1 {
     border-bottom: 2px solid rgb(40, 40, 190);
@@ -125,8 +120,9 @@
     margin: 3vh 0;
   }
   a {
-    font-size: 1.7vh;
-    margin-top: 4vh;
+    /* font-size: clamp(1rem, 1.7vh, 1.5rem); */
+    font-size: clamp(14px, 1.7vh, 22px);
+    margin-top: 4vh; /* Could also be clamped */
   }
   @keyframes loading-start {
     0% {
