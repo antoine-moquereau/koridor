@@ -1,4 +1,5 @@
 const FENCES = 20
 const SIZE = 9
+const MAX_HISTORY_LENGTH = 20
 
-export { FENCES, SIZE }
+export { FENCES, SIZE, MAX_HISTORY_LENGTH }

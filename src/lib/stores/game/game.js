@@ -1,6 +1,6 @@
 import { derived, writable } from 'svelte/store'
 
-import { FENCES, SIZE } from '$lib/constants'
+import { FENCES, MAX_HISTORY_LENGTH, SIZE } from '$lib/constants'
 import {
   breadthFirstSearch,
   createGraph,
@@ -34,6 +34,7 @@ import {
  * @property {number} activePlayer
  * @property {number[][]} graph?
  * @property {number[][]} playerWinningPositions?
+ * @property {Game[]} history
  */
 
 /**
@@ -62,7 +63,8 @@ const defaultGame = players => ({
           Array.from({ length: SIZE }, (_, i) => i * SIZE),
           Array.from({ length: SIZE }, (_, i) => i),
           Array.from({ length: SIZE }, (_, i) => i * SIZE + SIZE - 1)
-        ]
+        ],
+  history: []
 })
 
 function createGame() {
@@ -84,21 +86,33 @@ function createGame() {
      * @param {number} position
      */
     move: position => {
-      update(game => ({
-        ...game,
-        playerPositions: game.playerPositions.map((el, i) =>
-          i === game.activePlayer ? position : el
-        ),
-        activePlayer: nextActivePlayer(game)
-      }))
+      update(game => {
+        const newHistory = [...game.history, JSON.parse(JSON.stringify(game))]
+        if (newHistory.length > MAX_HISTORY_LENGTH) {
+          newHistory.shift()
+        }
+        return {
+          ...game,
+          playerPositions: game.playerPositions.map((el, i) =>
+            i === game.activePlayer ? position : el
+          ),
+          activePlayer: nextActivePlayer(game),
+          history: newHistory
+        }
+      })
     },
     /**
      * @param {number} position
      */
     placeHorizontalFence: position => {
-      update(game => ({
-        ...game,
-        fences: {
+      update(game => {
+        const newHistory = [...game.history, JSON.parse(JSON.stringify(game))]
+        if (newHistory.length > MAX_HISTORY_LENGTH) {
+          newHistory.shift()
+        }
+        return {
+          ...game,
+          fences: {
           positions: {
             horizontal: [...game.fences.positions.horizontal, position],
             vertical: game.fences.positions.vertical
@@ -106,16 +120,23 @@ function createGame() {
           available: decrementActivePlayerAvailableFences(game)
         },
         activePlayer: nextActivePlayer(game),
-        graph: placeHorizontalFence(game.graph, position)
-      }))
+        graph: placeHorizontalFence(game.graph, position),
+        history: newHistory
+      }
+    })
     },
     /**
      * @param {number} position
      */
     placeVerticalFence: position => {
-      update(game => ({
-        ...game,
-        fences: {
+      update(game => {
+        const newHistory = [...game.history, JSON.parse(JSON.stringify(game))]
+        if (newHistory.length > MAX_HISTORY_LENGTH) {
+          newHistory.shift()
+        }
+        return {
+          ...game,
+          fences: {
           positions: {
             horizontal: game.fences.positions.horizontal,
             vertical: [...game.fences.positions.vertical, position]
@@ -123,13 +144,27 @@ function createGame() {
           available: decrementActivePlayerAvailableFences(game)
         },
         activePlayer: nextActivePlayer(game),
-        graph: placeVerticalFence(game.graph, position)
-      }))
+        graph: placeVerticalFence(game.graph, position),
+        history: newHistory
+      }
+    })
     },
     /**
      * @param {Players} players
      */
-    set: players => set(defaultGame(players))
+    set: players => set(defaultGame(players)),
+    goBack: () => {
+      update(game => {
+        if (game.history.length === 0) {
+          console.log('No history to go back to.')
+          return game
+        }
+        const previousState = game.history.pop()
+        // The history array is part of the state, so it's restored along with everything else.
+        // We need to update the current game state to reflect the new history.
+        return { ...previousState, history: [...game.history] }
+      })
+    }
   }
 }
 

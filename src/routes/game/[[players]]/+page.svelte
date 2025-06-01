@@ -30,6 +30,9 @@
     <ActivePlayer />
     <Board />
     <TouchActions />
+    <Button class="GoBackButton" on:click={game.goBack} disabled={$game.history.length === 0}>
+      Go Back
+    </Button>
   </div>
 {:else}
   <div class="Congratulations" transition:fade|local>
@@ -159,5 +162,11 @@
     top: 0;
     overflow: hidden;
     z-index: 999;
+  }
+  .GoBackButton {
+    position: fixed;
+    bottom: 20px; /* Adjust as needed */
+    left: 20px; /* Adjust as needed */
+    z-index: 10; /* Ensure it's above other game elements if necessary */
   }
 </style>
