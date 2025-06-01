@@ -4,6 +4,9 @@ import { game } from './game.js' // Assuming game is exported and provides set, 
 import { MAX_HISTORY_LENGTH } from '$lib/constants.js'
 
 // Helper to get a clean game state for assertions (without complex Svelte store parts)
+/**
+ * @param {import('./game.js').Game} gameState
+ */
 const getCleanState = gameState => {
   const { playerPositions, fences, activePlayer } = gameState
   return { playerPositions, fences, activePlayer }

@@ -159,10 +159,29 @@ function createGame() {
           console.log('No history to go back to.')
           return game
         }
-        const previousState = game.history.pop()
-        // The history array is part of the state, so it's restored along with everything else.
-        // We need to update the current game state to reflect the new history.
-        return { ...previousState, history: [...game.history] }
+        // game.history will be mutated by pop(), so store a reference to the new history array
+        const newHistory = [...game.history]
+        const poppedState = newHistory.pop()
+
+        // Ensure poppedState and its playerPositions are valid before using
+        if (
+          !poppedState ||
+          !poppedState.playerPositions ||
+          typeof poppedState.playerPositions.length !== 'number'
+        ) {
+          console.error('Invalid state popped from history.')
+          // Potentially return current game state or handle error appropriately
+          return game
+        }
+
+        /** @type {Players} */
+        const numPlayers = poppedState.playerPositions.length === 2 ? 2 : 4;
+
+        return {
+          ...defaultGame(numPlayers), // Base structure
+          ...poppedState, // Apply historical values
+          history: newHistory // Set the updated history array (after pop)
+        }
       })
     }
   }
