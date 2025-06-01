@@ -175,7 +175,7 @@ function createGame() {
         }
 
         /** @type {Players} */
-        const numPlayers = poppedState.playerPositions.length === 2 ? 2 : 4;
+        const numPlayers = poppedState.playerPositions.length === 2 ? 2 : 4
 
         return {
           ...defaultGame(numPlayers), // Base structure
