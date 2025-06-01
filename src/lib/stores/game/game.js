@@ -38,7 +38,7 @@ import {
  * @property {Game[]} future
  */
 
-const MAX_HISTORY_SIZE = 50;
+const MAX_HISTORY_SIZE = 50
 
 /**
  * @param {Players} players
@@ -90,12 +90,12 @@ function createGame() {
      */
     move: position => {
       update(game => {
-        const gameSnapshot = { ...game };
-        delete gameSnapshot.history; // Exclude history from the snapshot
+        const gameSnapshot = { ...game }
+        delete gameSnapshot.history // Exclude history from the snapshot
 
-        const newHistory = [...game.history, JSON.parse(JSON.stringify(gameSnapshot))];
+        const newHistory = [...game.history, JSON.parse(JSON.stringify(gameSnapshot))]
         if (newHistory.length > MAX_HISTORY_SIZE) {
-          newHistory.shift();
+          newHistory.shift()
         }
         return {
           ...game,
@@ -105,7 +105,7 @@ function createGame() {
             i === game.activePlayer ? position : el
           ),
           activePlayer: nextActivePlayer(game)
-        };
+        }
       })
     },
     /**
@@ -113,12 +113,12 @@ function createGame() {
      */
     placeHorizontalFence: position => {
       update(game => {
-        const gameSnapshot = { ...game };
-        delete gameSnapshot.history; // Exclude history from the snapshot
+        const gameSnapshot = { ...game }
+        delete gameSnapshot.history // Exclude history from the snapshot
 
-        const newHistory = [...game.history, JSON.parse(JSON.stringify(gameSnapshot))];
+        const newHistory = [...game.history, JSON.parse(JSON.stringify(gameSnapshot))]
         if (newHistory.length > MAX_HISTORY_SIZE) {
-          newHistory.shift();
+          newHistory.shift()
         }
         return {
           ...game,
@@ -133,7 +133,7 @@ function createGame() {
           },
           activePlayer: nextActivePlayer(game),
           graph: placeHorizontalFence(game.graph, position)
-        };
+        }
       })
     },
     /**
@@ -141,12 +141,12 @@ function createGame() {
      */
     placeVerticalFence: position => {
       update(game => {
-        const gameSnapshot = { ...game };
-        delete gameSnapshot.history; // Exclude history from the snapshot
+        const gameSnapshot = { ...game }
+        delete gameSnapshot.history // Exclude history from the snapshot
 
-        const newHistory = [...game.history, JSON.parse(JSON.stringify(gameSnapshot))];
+        const newHistory = [...game.history, JSON.parse(JSON.stringify(gameSnapshot))]
         if (newHistory.length > MAX_HISTORY_SIZE) {
-          newHistory.shift();
+          newHistory.shift()
         }
         return {
           ...game,
@@ -161,7 +161,7 @@ function createGame() {
           },
           activePlayer: nextActivePlayer(game),
           graph: placeVerticalFence(game.graph, position)
-        };
+        }
       })
     },
     /**
@@ -171,50 +171,50 @@ function createGame() {
     undo: () => {
       update(game => {
         if (game.history.length === 0) {
-          return game; // Nothing to undo
+          return game // Nothing to undo
         }
 
-        const gameSnapshot = { ...game };
-        delete gameSnapshot.history;
-        delete gameSnapshot.future;
+        const gameSnapshot = { ...game }
+        delete gameSnapshot.history
+        delete gameSnapshot.future
 
-        const newFuture = [...game.future, JSON.parse(JSON.stringify(gameSnapshot))];
+        const newFuture = [...game.future, JSON.parse(JSON.stringify(gameSnapshot))]
         if (newFuture.length > MAX_HISTORY_SIZE) {
-          newFuture.shift(); // Remove oldest if future exceeds max size
+          newFuture.shift() // Remove oldest if future exceeds max size
         }
 
-        const previousState = game.history.pop(); // Get the last state from history
+        const previousState = game.history.pop() // Get the last state from history
 
         return {
           ...previousState, // Restore the previous state
           history: [...game.history], // Update history (already popped)
           future: newFuture // Update future
-        };
-      });
+        }
+      })
     },
     redo: () => {
       update(game => {
         if (game.future.length === 0) {
-          return game; // Nothing to redo
+          return game // Nothing to redo
         }
 
-        const gameSnapshot = { ...game };
-        delete gameSnapshot.history;
-        delete gameSnapshot.future;
+        const gameSnapshot = { ...game }
+        delete gameSnapshot.history
+        delete gameSnapshot.future
 
-        const newHistory = [...game.history, JSON.parse(JSON.stringify(gameSnapshot))];
+        const newHistory = [...game.history, JSON.parse(JSON.stringify(gameSnapshot))]
         if (newHistory.length > MAX_HISTORY_SIZE) {
-          newHistory.shift(); // Remove oldest if history exceeds max size
+          newHistory.shift() // Remove oldest if history exceeds max size
         }
 
-        const nextState = game.future.pop(); // Get the last state from future
+        const nextState = game.future.pop() // Get the last state from future
 
         return {
           ...nextState, // Restore the next state
           history: newHistory, // Update history
           future: [...game.future] // Update future (already popped)
-        };
-      });
+        }
+      })
     }
   }
 }
