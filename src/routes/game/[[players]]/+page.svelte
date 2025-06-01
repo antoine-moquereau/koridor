@@ -67,13 +67,13 @@
   }
   .Game {
     animation: 0.7s game;
-    border: 0;
-    display: block;
-    filter: blur(var(--blur-overlay, 0));
-    height: 100vh;
-    position: fixed;
+    /* border: 0; */ /* Moved to critical.css */
+    /* display: block; */ /* Moved to critical.css */
+    /* filter: blur(var(--blur-overlay, 0)); */ /* Moved to critical.css */
+    /* height: 100vh; */ /* Moved to critical.css */
+    /* position: fixed; */ /* Moved to critical.css */
     transition: filter 0.9s;
-    width: 100vw;
+    /* width: 100vw; */ /* Moved to critical.css */
   }
   .Congratulations {
     display: flex;
@@ -145,19 +145,19 @@
     }
   }
   .Loading {
-    align-items: center;
+    /* align-items: center; */ /* Moved to critical.css */
     animation:
       0.7s loading-start,
       0.7s 0.7s loading-end;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    overflow: hidden;
-    z-index: 999;
+    /* bottom: 0; */ /* Moved to critical.css */
+    /* display: flex; */ /* Moved to critical.css */
+    /* flex-direction: column; */ /* Moved to critical.css */
+    /* justify-content: center; */ /* Moved to critical.css */
+    /* left: 0; */ /* Moved to critical.css */
+    /* position: absolute; */ /* Moved to critical.css */
+    /* right: 0; */ /* Moved to critical.css */
+    /* top: 0; */ /* Moved to critical.css */
+    /* overflow: hidden; */ /* Moved to critical.css */
+    /* z-index: 999; */ /* Moved to critical.css */
   }
 </style>
